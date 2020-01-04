@@ -14,10 +14,9 @@ def main():
 
 
 	while True:
-		print('''===========Welcome===========
---1.register 2.login 3.quit--
-=============================
-            ''')
+		print('''\t\t\t===========Welcome===========\n\
+			--1.register 2.login 3.quit--\n\
+			=============================''')
 		try:
 			cmd = input('請輸入 1).注册 2).登录 3).退出')
 		except KeyboardInterrupt:
