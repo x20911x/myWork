@@ -18,7 +18,7 @@ def main():
 			--1.register 2.login 3.quit--\n\
 			=============================''')
 		try:
-			cmd = input('請輸入 1).注册 2).登录 3).退出')
+			cmd = input('請輸入 1).註冊 2).登入 3).退出 >>> ')
 		except KeyboardInterrupt:
 			s.close()
 			sys.exit('客戶退出')
@@ -56,64 +56,72 @@ def main():
 
 def do_register(s):
 
-	name = input("Register user name: ")
+	name = input("請輸入用戶名: ")
+	# 判斷兩次密碼是否相同
 	while True:
-		passwd = input("input the passwd")
+		passwd = input("請輸入密碼:")
 		if ' ' in passwd:
 			print('請勿輸入空格')
 			continue
-		passwd2 = input("input the passwd again")
+		passwd2 = input("請在一次輸入密碼:")
 		if passwd != passwd2:
 			print('密碼不一致')
 		else:
 			break
-	# 帳號密碼完成則發生給服務端
+	# 帳號密碼完成則發給服務端, 請求服務端進行註冊處理
 	msg = 'R {} {}'.format(name,passwd)
 	s.send(msg.encode())
 
 	# 接收服務端確認訊息
 	data = s.recv(1024).decode()
+	# 用戶註冊成功
 	if data == 'OK':
-		# print('註冊成功')
 		return True,name
+	# 用戶已存在
 	elif data == 'exists':
 		print('用戶已經存在')
 		return False,name
+	# 註冊異常
 	else:
 		return False,name
 
 
 
 def do_login(s):
-	name = input('input user\'s name')
+	name = input('請輸入用戶名:')
 
 	while True:
-		passwd = input("input the passwd")
+		passwd = input("請輸入密碼:")
 		if ' ' in passwd:
-			print('請勿輸入空格')
+			print('請勿輸入空格:')
 			continue
 		break
+
+	# 帳號密碼完成則發給服務端, 請求服務端進行登入處理
 	msg = 'L {} {}'.format(name,passwd)
 	s.send(msg.encode())
 
 	# 接收服務端確認訊息
 	data = s.recv(1024).decode()
+
+	# 在user表查到用戶資訊, 回傳OK
 	if data == 'OK':
-		
 		return (True,name)
-	else:
-		
+
+	# 若查不到該用戶的數據
+	else:	
 		return (False,name)
+
 
 # 二級選單界面
 def do_login_v2(s,name):
 	while True:
 		print('''
-	==========查询界面==========
-	1.查词    2.历史记录   3.退出
+	==========查詢界面==========
+	1.查詢    2.歷史紀錄   3.退出
 	===========================''')
 		try:
-			cmd = input('''請輸入1).查词2).历史记录3).退出''')
+			cmd = input('''請輸入 1).查單詞 2).歷史紀錄 3).退出 >>>''')
 		except KeyboardInterrupt:
 			s.close()
 			sys.exit('客戶退出')
@@ -138,6 +146,11 @@ def do_query(s,name):
 		# 接收單詞的解釋
 		data = s.recv(1024).decode()
 		print('%s >>> %s' % (word, data))
+		exit = input('是否繼續查詢 1)是 2)否：')
+		if exit == '1':
+			continue
+		else:
+			break
 
 
 def do_hist(s,name):
@@ -146,28 +159,21 @@ def do_hist(s,name):
 	# 選擇查詢的依據
 		cmd = input('1).user 2).word 3).time: 4). all')
 		if cmd == '1':
-			user = input('user >>>')
-			# s.send(user.encode())
-			uwt = user
+			uwt = input('user >>>')
 			break
 		elif cmd == '2':
-			word = input('word >>>')
-			# s.send(word.encode())
-			uwt = word
+			uwt = input('word >>>')
 			break
 		elif cmd == '3':
-			time = input('time and data \
-				(ex. 202001032109) >>>')
-			# s.send(time.encode())
-			uwt = time
+			uwt = input('time and data (ex. 202001032109) >>>')
 			break
 		elif cmd == '4':
 			s.send(b'H all all')
-			# 不執行下面的程序
 			break
 		else:
 			continue
-	# 發送查詢請求 並付上使用者姓名 依據
+
+	# 發送查詢請求 並附上使用者姓名 依據
 	if cmd != '4':
 		msg = 'H {} {}'.format(name, uwt)
 		s.send(msg.encode())
@@ -180,6 +186,7 @@ def do_hist(s,name):
 			print(data)
 			if data == '未查詢到相關紀錄':
 				return
+
 
 if __name__ =='__main__':
 	main()
