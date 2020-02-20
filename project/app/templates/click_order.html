@@ -1,0 +1,61 @@
+<!-- <!doctype html>
+<html> -->
+
+<!-- <head>
+  <meta charset="utf-8">
+  <title>Samの部落格</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/static/images/bitbug_favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="css/comments.css">
+  <link href="/static/css/base.css" rel="stylesheet">
+  <link href="/static/css/index.css" rel="stylesheet">
+  <link href="/static/css/m.css" rel="stylesheet">
+  <script src="/static/js/jquery.min.js" type="text/javascript"></script>
+  <script src="/static/js/jquery.easyfader.min.js"></script>
+  <script src="/static/js/scrollReveal.js"></script>
+  <script src="/static/js/wangEditor.js"></script>
+  <script src="/static/js/common.js"></script>
+  <script src="/static/js/xcConfirm.js"></script>
+</head> -->
+
+
+<!-- <body> -->
+  <div class="sidebar">
+    <div class="zhuanti">
+      <h2 class="hometitle">特別推薦</h2>
+      <ul>
+        {% for topic in params.topics[:2] %}
+        <li> 
+          <i>
+            <img src="/static/{{topic.images}}">
+          </i>
+          <p>
+            {{topic.title|safe}} 
+            <span>
+              <a href="/info?topic_id={{topic.id}}">閱讀</a>
+            </span> 
+          </p>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="tuijian">
+    <h2 class="hometitle">點擊排行</h2>
+<!--         <ul class="tjpic">
+      <i><img src="/static/images/toppic01.jpg"></i>
+      <p><a href="#">Python语言在人工智能(AI)中的优势</a></p>
+    </ul> -->
+    {% for topic in params.topics_desc[0:2] %}
+    <ul class="sidenews">
+      <li> <i><img src="/static/{{topic.images}}"></i>
+        <p>
+          <a href="/info?topic_id={{topic.id}}">{{topic.title|safe}}</a>
+        </p>
+        <span></span>
+        <span>{{topic.pub_date.strftime("%Y--%m--%d")}} 瀏覽次數: {{topic.read_num}}</span>
+      </li>
+    </ul>
+    {% endfor %}
+  </div>
+<!-- </body> -->

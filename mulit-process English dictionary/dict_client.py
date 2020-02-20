@@ -70,19 +70,23 @@ def do_register(s):
 			print('密碼不一致')
 		else:
 			break
+
 	# 帳號密碼完成則發給服務端, 請求服務端進行註冊處理
 	msg = 'R {} {}'.format(name,passwd)
 	s.send(msg.encode())
 
 	# 接收服務端確認訊息
 	data = s.recv(1024).decode()
+
 	# 用戶註冊成功
 	if data == 'OK':
 		return True,name
+
 	# 用戶已存在
 	elif data == 'exists':
 		print('用戶已經存在')
 		return False,name
+		
 	# 註冊異常
 	else:
 		return False,name
