@@ -7,6 +7,7 @@ class Category(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	cate_name = db.Column(db.String(50),nullable=False)
 
+	# 定義與Topic之間的關聯關係和反向引用
 	topics = db.relationship('Topic',backref='category',lazy='dynamic')
 
 
@@ -15,6 +16,7 @@ class BlogType(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	type_name = db.Column(db.String(20),nullable=False)
 
+	# 定義與Topic之間的關聯關係和反向引用
 	topics = db.relationship('Topic',backref='blogType',lazy='dynamic')
 
 
@@ -31,15 +33,10 @@ class User(db.Model):
 	is_author=db.Column(db.SmallInteger,default=0)
 	images = db.Column(db.Text)
 
+	# 定義與Reply, Topic之間的關聯關係和反向引用
 	topics = db.relationship('Topic',backref='user',lazy='dynamic')
 	replies = db.relationship('Reply',backref='user',lazy="dynamic")
-  	#增加与Topic之间的关联关系和反向引用(多对多)
-	voke_topics=db.relationship(
-		'Topic',
-		secondary='voke',
-		backref=db.backref('voke_users',lazy='dynamic'),
-		lazy='dynamic'
-	)
+
 
 class Topic(db.Model):
 	__tablename__ = "topic"
@@ -52,12 +49,17 @@ class Topic(db.Model):
 	content = db.Column(db.Text,nullable=False)
 	images = db.Column(db.Text)
 
+	# 關係:一(Category)對多(Topic)的關係
 	category_id = db.Column(db.Integer,db.ForeignKey('category.id'))
+	# 關係:一(Blogtype)對多(Topic)的關係
 	blogtype_id = db.Column(db.Integer,db.ForeignKey('blogtype.id'))
+	 # 關係:一(User)對多(Topic)的關係
 	user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
-	#定义与Reply之间的关联关系和反向引用
+
+	# 定義與Reply之間的關聯關係和反向引用
 	replies = db.relationship('Reply',backref='topic',lazy="dynamic")
 
+	# 定義將表屬性轉為字典格式
 	def to_dict(self):
 		dic = {
 		"id" : self.id,
@@ -79,9 +81,10 @@ class Reply(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	content = db.Column(db.Text,nullable=False)
 	reply_time = db.Column(db.DateTime)
-	# 关系:一(Topic)对多(Reply)的关系
+
+	# 關係:一(Topic)對多(Reply)的關係
 	topic_id = db.Column(db.Integer,db.ForeignKey('topic.id'))
-	# 关系:一(User)对多(Reply)的关系
+	# 關係:一(User)對多(Reply)的關係
 	user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
 
 Voke = db.Table(

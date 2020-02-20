@@ -176,7 +176,7 @@ def release_views():
 		#！！！！！！！分叉點！！！！！！！ 
 		# 用來判斷採取"更新"(有值) 或是 "發布文章 >>> 
 		# (有值)採取 >>> "更新" 
-		# (空數值)採取 >>> "發布文章(空數值)"
+		# (空數值)採取 >>> "發布文章"
 		update_get = request.args.get('update_get')
 		
 		# query category and blogtype
@@ -236,7 +236,7 @@ def release_views():
 		#！！！！！！！重要！！！！！！！ 
 		# 用來判斷採取"更新"(有值) 或是 "發布文章
 		# (有值)採取 >>> "更新" 
-		# (空數值)採取 >>> "發布文章(空數值)"
+		# (空數值)採取 >>> "發布文章"
 		update_post = request.form.get('update_post')
 		########### handle the post for update topic #############
 		if update_post:
