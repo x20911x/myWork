@@ -3,15 +3,16 @@
 from socket import *
 import os,sys
 
+# 主程序
 def main():
 	# 創建立socket
 	s = socket()
 	HOST = sys.argv[1]
 	POST = int(sys.argv[2])
 	ADDR = (HOST,POST)
+
 	# 建立連接
 	s.connect(ADDR)
-
 
 	while True:
 		print('''\t\t\t===========Welcome===========\n\
@@ -24,6 +25,7 @@ def main():
 			sys.exit('客戶退出')
 		except Exception as e:
 			print(e)
+
 	# 使用者註冊
 		if cmd == '1':
 			win, name = do_register(s)
@@ -34,6 +36,7 @@ def main():
 			else:
 				print('%s註冊失敗'% name)
 				continue
+			
 	# 使用者登錄
 		elif cmd == '2':
 			win, name = do_login(s)
@@ -45,7 +48,6 @@ def main():
 				# 若登錄失敗, 則回到選單 
 				print('%s登錄失敗'% name)
 				continue
-
 		elif cmd == '3':
 			s.send(b'E')
 			sys.exit("退出")
@@ -53,10 +55,10 @@ def main():
 			print("請再次輸入")
 			continue
 
-
+# 註冊功能
 def do_register(s):
-
 	name = input("請輸入用戶名: ")
+
 	# 判斷兩次密碼是否相同
 	while True:
 		passwd = input("請輸入密碼:")
@@ -68,19 +70,23 @@ def do_register(s):
 			print('密碼不一致')
 		else:
 			break
+
 	# 帳號密碼完成則發給服務端, 請求服務端進行註冊處理
 	msg = 'R {} {}'.format(name,passwd)
 	s.send(msg.encode())
 
 	# 接收服務端確認訊息
 	data = s.recv(1024).decode()
+
 	# 用戶註冊成功
 	if data == 'OK':
 		return True,name
+
 	# 用戶已存在
 	elif data == 'exists':
 		print('用戶已經存在')
 		return False,name
+		
 	# 註冊異常
 	else:
 		return False,name

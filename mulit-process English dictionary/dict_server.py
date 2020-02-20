@@ -3,7 +3,7 @@
 from socket import *
 import os,sys,pymysql,time,signal
 
-
+# Parent process程序處理客戶端連接及創立一級子進程
 def main():
 
 	# 建立數據庫連接
@@ -62,7 +62,7 @@ def main():
 			# 持續阻塞, 等待客戶端的連線
 			continue
 
-
+# Child process 子程序處理客戶端請求
 def do_child(c,db):
 	# try:
 	while True:
@@ -94,8 +94,7 @@ def do_child(c,db):
 			continue
 
 
-
-
+# 註冊功能
 def do_register(c,db,data):
 	# 獲取用戶端輸入的註冊姓名及密碼
 	name = data[1]
@@ -127,7 +126,7 @@ def do_register(c,db,data):
 		db.send(b'fail')
 		db.rollback()
 
-
+# 登入功能
 def do_login(c,db,data):
 	# 獲取用戶端輸入的用戶登入姓名及密碼
 	name = data[1]
@@ -154,7 +153,7 @@ def do_login(c,db,data):
 		print('%s登錄成功'% name)
 		c.send(b'OK')
 
-		
+# 字典查詢功能		
 def do_query(c,db,data):
 	# 獲取用戶端輸入的用戶姓名及查詢單詞
 	name = data[1]
@@ -195,8 +194,7 @@ def do_query(c,db,data):
 		# 若出現異常則回滾
 		db.rollback()
 
-
-
+# 歷史紀錄查詢功能
 def do_hist(c,db,data):
 	# 獲取用戶端輸入的用戶姓名及查詢歷史紀錄
 	name = data[1]
