@@ -1,6 +1,6 @@
 function loadTopic(pid){
   $.ajax({
-    url:'http://127.0.0.1:5000/list_data?pid='+pid,
+    url:'http://3.114.174.92:5000/list_data?pid='+pid,
     type:'get',
     dataType:'jsonp',
     // 這個地方使用同步 確保獲取json數據後再往下執行,

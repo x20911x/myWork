@@ -1,7 +1,7 @@
-#对整个应用做初始化操作
+#對整個應用做初始化操作
 # 主要工作：
-# 1.构建Flask应用以及各种配置
-# 2.构建SQLAlchemy的应用
+# 1.構建Flask應用以及各種配置
+# 2.構建SQLAlchemy的應用
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 # from sqlalchemy import text
@@ -12,14 +12,14 @@ db = SQLAlchemy()
 
 def create_app():
 	app = Flask(__name__)
-	#配置启动模式为调试模式
+	#配置啟動模式為調試模式
 	app.config['DEBUG'] = True
 	#配置数据库的连库字符串
 	app.config['SQLALCHEMY_DATABASE_URI']\
-	="mysql://root:a123456@localhost:3306/blog"
-	#配置数据库内容在更新时自动提交
+	="mysql://root:x20911x@localhost:3306/blog"
+	#配置數據庫內容在更新時自動提交
 	app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
-	#配置session所需要的秘钥
+	#配置session所需要的秘鑰
 	app.config['SECRET_KEY']='you guess'
 
 	# db = SQLAlchemy(app)
@@ -29,7 +29,7 @@ def create_app():
 	# db = SQLAlchemy(app)
 	# from .models import Test2
 
-	#数据库的初始化
+	#數據庫的初始化
 	db.init_app(app)
 	app.app_context().push()
 	db.create_all(app=app)
@@ -38,8 +38,8 @@ def create_app():
 	from .main import main as main_blueprint
 	app.register_blueprint(main_blueprint)
 
-	from .user import user as user_blueprint
-	app.register_blueprint(user_blueprint)
+	# from .user import user as user_blueprint
+	# app.register_blueprint(user_blueprint)
 	return app
 
 
