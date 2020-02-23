@@ -266,6 +266,32 @@ def release_views():
 			# 把修改後的content存入topic表中
 			topic.content = content
 
+
+			# 若有夾帶檔案則執行以下代碼
+			rf = request.files.get('picture')
+			print('request.files',request.files,"request.files.get('picture'):",rf,'type(rf):',type(rf))
+			if rf:
+				print('uploaded file')
+				# 取出文件
+				filename, f = views_tool.file_views(rf)
+
+				# 處理文件名稱 將新的文件名賦值給topic.images
+				topic.images = 'upload/'+filename
+				
+				# 獲取當前文件或文件夾的存儲路徑
+				print('__file__:',__file__)
+				print('os.path.dirname(__file__)',os.path.dirname(__file__))
+				print('basedir',os.path.dirname(os.path.dirname(__file__)))
+
+				basedir = os.path.dirname(os.path.dirname(__file__))
+
+				upload_path = os.path.join(basedir,'static/upload',filename)
+				
+				# 將文件保存至服務器upload_path的路徑
+				f.save(upload_path)
+
+			# 提交topic表數據到數據庫	
+			db.session.add(topic)
 			return redirect('/info?topic_id='+str(topic_id))
 		########### handle the post for release topic #############
 		else:

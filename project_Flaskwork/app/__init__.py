@@ -14,7 +14,7 @@ def create_app():
 	app = Flask(__name__)
 	#配置啟動模式為調試模式
 	app.config['DEBUG'] = True
-	#配置数据库的连库字符串
+	#配置數據庫的連庫字符串
 	app.config['SQLALCHEMY_DATABASE_URI']\
 	="mysql://root:x20911x@localhost:3306/blog"
 	#配置數據庫內容在更新時自動提交

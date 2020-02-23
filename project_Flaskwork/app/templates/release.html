@@ -16,9 +16,7 @@
 	<script src="/static/js/scrollReveal.js"></script>
 	<script src="/static/js/wangEditor.js"></script>
 	<script src="/static/js/common.js"></script>
-	<!--[if lt IE 9]>
-	<script src="/static/js/modernizr.js"></script>
-	<![endif]-->
+
 </head>
 
 <body>
@@ -71,18 +69,8 @@
 			    <p style="margin:15px 0 0 12px; ">
 					<input type="file" name="picture" style="margin-right: 12px">picture
 				</p>
-			    <!-- <p style="margin:15px 0 0 12px; ">
-			        <input type="submit" value="提交!!!">
-			    </p> -->
 				<br>
 				<textarea id="mytest" name="content" cols="60" rows="10" style="margin-left: 12px;margin-right: 12px;">{% if params.update_get %}{{params.content}}{% endif %}</textarea>
-
-<!-- 				<script>
-						var ct = $('#mytest').val(); 
-						ct= ct.replace(/^(\r\n|\n|\r|\t| )+/gm, "");
-						$('#mytest').val(ct);
-				</script> -->
-
 
 				<br>
 				<p>					
@@ -94,7 +82,6 @@
 					{% else %}
 					<input id="id_article" name="update_post" type="hidden" value="{{params.update_post}}">
 					<input name="topic_id" type="hidden" value="{{params.topic_id}}">
-
 
 					<input name="submit" type="submit" id="submit" tabindex="5" value="修改" class="button">
 					{% endif %}
