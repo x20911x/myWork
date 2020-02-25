@@ -161,14 +161,14 @@ def release_views():
 
 		# 驗證是否有權限修改文章
 		update_get = request.args.get('update_get')
-		user = User.query.filter_by(id=session['uid']).first()
+		user = User.query.filter_by(id=request.cookies.get('uid')).first()
 
 		if user.is_author != 1 and update_get:
 			# 若非板主點擊修改文章時重定向到該文章頁面
 			return redirect('/info?topic_id='+str(request.args.get('topic_id')))
 
 		# 驗證是否有權限發表文章
-		user = User.query.filter_by(id=session.get('uid')).first()
+		# user = User.query.filter_by(id=session.get('uid')).first()
 		if user.is_author != 1:
 			# 若非板主則重定向到首頁
 			return redirect('/')
