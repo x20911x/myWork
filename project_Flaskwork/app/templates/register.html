@@ -51,7 +51,6 @@
 						</p>
 						<div class="clear"> </div>
 	            	</li>
-					<!--用于记录注册跳转来源，方便注册之后跳转之前的页面-->
           			<input type="hidden" name="source_url" value="">
 					<input type="submit" value="創建並登錄">
 					<div class="clear"> </div>
@@ -64,7 +63,7 @@
 		$(function(){
 			$("#login_id").blur(function(){
 
-				var url ="http://127.0.0.1:5000/loginname-check?loginname=" + $("#login_id").val()
+				var url ="http://3.114.174.92:5000/loginname-check?loginname=" + $("#login_id").val()
 				// console.log(url);
 				$.ajax({
 		          url : url,
@@ -80,8 +79,7 @@
 			});
 
 			$("#password2").blur(function(){
-				console.log('aaaaaaaaaaaaaa')
-				var url ="http://127.0.0.1:5000/password-check?password=" + $("#password").val()+'&password2='+ $("#password2").val()
+				var url ="http://3.114.174.92:5000/password-check?password=" + $("#password").val()+'&password2='+ $("#password2").val()
 				console.log(url);
 				$.ajax({
 		          url : url,

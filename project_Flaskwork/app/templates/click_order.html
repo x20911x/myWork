@@ -1,0 +1,36 @@
+<!-- <body> -->
+  <div class="sidebar">
+    <div class="zhuanti">
+      <h2 class="hometitle">特別推薦</h2>
+      <ul>
+        {% for topic in params.topics[:2] %}
+        <li> 
+          <i>
+            <img src="/static/{{topic.images}}">
+          </i>
+          <p>
+            {{topic.title|safe}} 
+            <span>
+              <a href="/info?topic_id={{topic.id}}">閱讀</a>
+            </span> 
+          </p>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="tuijian">
+    <h2 class="hometitle">點擊排行</h2>
+    {% for topic in params.topics_desc[0:2] %}
+    <ul class="sidenews">
+      <li> <i><img src="/static/{{topic.images}}"></i>
+        <p>
+          <a href="/info?topic_id={{topic.id}}">{{topic.title|safe}}</a>
+        </p>
+        <span></span>
+        <span>{{topic.pub_date.strftime("%Y--%m--%d")}} 瀏覽次數: {{topic.read_num}}</span>
+      </li>
+    </ul>
+    {% endfor %}
+  </div>
+<!-- </body> -->

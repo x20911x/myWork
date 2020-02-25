@@ -36,8 +36,7 @@
 						<li class="lmname"><a href="#">{{params.topic.category.cate_name}}</a></li>
 						<li class="timer">{{params.topic.pub_date.strftime("%Y-%m-%d")}}</li>
 						<li class="view">{{params.topic.read_num}}</li>
-						<li class="like">{{params.topic.voke_users.count()}}</li>
-					<!-- </ul> -->
+
 				</div>
 				<div class="tags">
 					<a href="#" target="_blank">{{params.topic.blogType.type_name}}</a> &nbsp; 
@@ -54,7 +53,6 @@
 				<a href="/release?update_get=Y&topic_id={{params.topic.id}}">
 					<p class="diggit">修改文章
 					</p>
-					<!-- (<b id="diggnum">{{params.topic.voke_users.count()+2}}</b>) -->
 				</a>
 				<a href="/delete_topic?topic_id={{params.topic.id}}" class="dashang">
 					<p class="dasbox">刪除文章
@@ -94,9 +92,8 @@
 						
 
 							{% for reply in params.replies %}
-							<!-- {% if reply.topic_id == params.topic_id %} -->
 							<ol class="commentlist">
-								<!--先遍历父级评论-->
+
 								<li>
 									<div class="top">
 										<span style="float:left">
@@ -107,24 +104,14 @@
 											<a href="#" title="">{{reply.reply_time}}</a><a href="#" class="replyComment">回應</a>
 										</span>
 									</div>
-									<!-- <div><img alt='' src='/static/{{reply.user.images}}' class='commentAvatar avatar-32 commentPhoto' height='32' width='32' /></div> -->
 									<div class="body">
 										<p>{{reply.content|safe}}</p>
 									</div>
 								</li>
 							</ol>
-							<!-- {% endif %} -->
+
 							{% endfor %}
 
-								<!--如果父级评论有子评论，就把子评论输出-->
-								<!-- <li>
-									<div class="reply">
-										<div class="top"><a href="#" class="url">pipilu</a><span class="time">
-												@ <a href="#" title="">2018-09-10 9:38</a></span></div>
-										<div><img alt="" src="/static/images/02.jpg" class="commentAvatar avatar-32 commentPhoto" height="32" width="32"></div>
-										<div class="body">楼上说的对</div>
-									</div>
-								</li> -->
 							{% if params.uname%}
 							<div id="commentform">
 								<h3 id="respond">在這邊添加你的留言！</h3>
@@ -148,33 +135,7 @@
 	</article>
 	
 	{{macros.footer()}}
-<!-- 	<script>
-		var E = window.wangEditor
-		var editor = new E('#editor')
-		// 或者 var editor = new E( document.getElementById('editor') )
-		editor.customConfig.menus = [
-			'head', // 标题
-			'bold', // 粗体
-			'fontSize', // 字号
-			'fontName', // 字体
-			'italic', // 斜体
-			'underline', // 下划线
-			'strikeThrough', // 删除线
-			'foreColor', // 文字颜色
-			'backColor', // 背景颜色
-			'link', // 插入链接
-			'list', // 列表
-			'justify', // 对齐方式
-			'quote', // 引用
-			'emoticon', // 表情
-			'image', // 插入图片
-			'table', // 表格
-			'video', // 插入视频
-			'undo', // 撤销
-			'redo' // 重复
-		]
-		editor.create()
-	</script> -->
+
 </body>
 
 </html>

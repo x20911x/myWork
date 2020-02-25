@@ -5,23 +5,6 @@
   <meta charset="utf-8">
   <title>首頁_Samの部落格</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--   <link rel="shortcut icon" href="/static/images/bitbug_favicon.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/static/css/animate.min.css">
-  <link rel="stylesheet" href="/static/css/base.css">
-  <link rel="stylesheet" href="/static/css/comments.css">
-  <link rel="stylesheet" href="/static/css/index.css">
-  <link rel="stylesheet" href="/static/css/login_reglogin.css">
-  <link rel="stylesheet" href="/static/css/m.css">
-
-  <link href="/static/css/base.css" rel="stylesheet">
-  <link href="/static/css/index.css" rel="stylesheet">
-  <link href="/static/css/m.css" rel="stylesheet">
-  <script src="/static/js/jquery.min.js" type="text/javascript"></script>
-  <script src="/static/js/jquery.easyfader.min.js"></script>
-  <script src="/static/js/scrollReveal.js"></script>
-  <script src="/static/js/wangEditor.js"></script>
-  <script src="/static/js/common.js"></script>
-  <script src="/static/js/xcConfirm.js"></script> -->
   <link rel="shortcut icon" href="/static/images/bitbug_favicon.ico" type="image/x-icon" />
   <link href="/static/css/base.css" rel="stylesheet">
   <link href="/static/css/index.css" rel="stylesheet">
@@ -36,7 +19,6 @@
 <body>
   {% import 'macro.html' as macros %}
     {{macros.show(params)}}
-
 
   {% block pagebg %}
   {% endblock %}
@@ -65,14 +47,7 @@
       </div>
       <!--banner end-->
       <div class="toppic">
-        <!-- <li> <a href="info.html" target="_blank"> <i><img src="/static/images/toppic01.jpg"></i>
-            <h2>linux升级py3,安装pip,svn</h2>
-            <span>Linux</span>
-          </a> </li>
-        <li> <a href="info.html" target="_blank"> <i><img src="/static/images/zd01.jpg"></i>
-            <h2>精通Python编程——Python深入浅出教程</h2>
-            <span>python</span>
-          </a> </li> -->
+
         {% for topic in params.topics[3:5] %}
           <li>
             <a href="/info?topic_id={{topic.id}}" target="_blank">
@@ -92,13 +67,7 @@
       <h3 class="blogtitle"><a href="info?topic_id={{topic.id}}" target="_blank">{{topic.title|safe}}</a></h3>
 
       {% if topic.images %}
-      <!-- <span
-        {% if loop.index % 2 ==0 %}
-          class='bigpic'
-        {% else %}
-          class='blogpic'
-        {% endif %}
-        ><a href="info?topic_id={{topic.id}}" title=""><img src="/static/{{topic.images}}" alt=""></a></span> -->
+
         <span class='blogpic'>
           <a href="info?topic_id={{topic.id}}" title="">
             <img src="/static/{{topic.images}}" alt="">
@@ -113,7 +82,7 @@
           <li class="lmname"><a href="info.html">{{topic.category.cate_name}}</a></li>
           <li class="timer">{{topic.pub_date.strftime("%Y--%m--%d")}}</li>
           <li class="view"><span>瀏覽次數 {{topic.read_num}}</span></li>
-          <!-- <li class="like">{{topic.voke_users.count()}}</li> -->
+
         </ul>
       </div>
     </div>
