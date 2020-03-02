@@ -408,7 +408,7 @@ def info_views():
 @main.route('/delete_topic')
 def delete_user():
 	# 判斷若沒有站長權限 則重定向到本篇文章
-	user = User.query.filter_by(id=session.get('uid')).first()	
+	user = User.query.filter_by(id=request.cookies.get('uid')).first()	
 	if user.is_author != 1:
 		return redirect('/info?topic_id='+str(topic_id))
 	
