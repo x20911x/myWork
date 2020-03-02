@@ -20,7 +20,11 @@ def main_index():
 def login_views():
 	if request.method == 'GET':
 		# 若處於登錄狀態(session or cookie)則直接回到首頁
-		if 'uid' in session or 'uid' in request.cookies:
+		if 'uid' in session:
+			return redirect('/')
+		elif 'uid' in request.cookies:
+			session['uid'] = request.cookies['uid']
+			session['uname'] = request.cookies['uname']
 			return redirect('/')
 		return render_template('login.html')
 
@@ -151,6 +155,9 @@ def release_views():
 		if 'uid' in session and 'uname' in session:
 			uname = session['uname']
 		elif 'uid' in request.cookies and 'uname' in request.cookies:
+			session['uid'] = request.cookies['uid']
+			session['uname'] = request.cookies['uname']	
+				
 			uname = request.cookies.get('uname')
 		# 若非用戶則重定向到登錄頁面
 		else:
@@ -160,8 +167,10 @@ def release_views():
 		uname,topics,topics_desc = views_tool.every_views()
 
 		# 驗證是否有權限修改文章
-		update_get = request.args.get('update_get')
-		user = User.query.filter_by(id=request.cookies.get('uid')).first()
+		update_get = request.args.get('update_get')	
+
+
+		user = User.query.filter_by(id=(session.get('uid'))).first()
 
 		if user.is_author != 1 and update_get:
 			# 若非板主點擊修改文章時重定向到該文章頁面
@@ -197,21 +206,10 @@ def release_views():
 			# print(topic.content)
 
 			# -------------------獲取到原本文章的title-------------
-
-			# 將獲取到的 "br標簽" 替換成 "換行" 
-			title_change_line = '\n'.join(topic.title.split('<br>'))
-
-			# 將獲取到的 "&nbsp標簽" 替換成 "空格"
-			title = ' '.join(title_change_line.split('&nbsp;'))
-
+			title = views_tool.database_to_text(topic.title)
 
 			# -------------------獲取到原本文章的內文-------------
-
-			# 將獲取到的 "br標簽" 替換成 "換行" 
-			content_change_line = '\n'.join(topic.content.split('<br>'))
-			
-			# 將獲取到的 "&nbsp標簽" 替換成 "空格"
-			content = ' '.join(content_change_line.split('&nbsp;'))
+			content = views_tool.database_to_text(topic.content)
 
 			# -------------------獲取到原本文章的category_id-------------
 			category_id = topic.category_id
@@ -245,26 +243,18 @@ def release_views():
 			topic_id = request.form.get('topic_id')
 			topic = Topic.query.filter_by(id=int(topic_id)).first()
 
-			
-			# 將獲取到的 "換行" 替換成 "br標簽" 			
-			title_change_line = '<br>'.join(request.form.get('author').split('\n'))
-			# 將獲取到的 "空格" 替換成 "&nbsp;標簽"
-			title = '&nbsp;'.join(title_change_line.split(' '))
+			# 文字存入資料庫的轉換處理 以正常渲染到模板上
 			# 把修改後的title存入topic表中
-			topic.title = title
+			topic.title = views_tool.text_to_database(request.form.get('author'))
 
 			# 獲取修改後的內容存入topic表中 
 			topic.blogtype_id = request.form.get('list')
 			topic.category_id = request.form.get('category')
-			topic.user_id = session.get('uid')
+			# topic.user_id = request.cookies.get('uid')
 
-
-			# 將獲取到的 "換行" 替換成 "br標簽"
-			content_change_line = '<br>'.join(request.form.get('content').split('\n'))
-			# 將獲取到的 "空格" 替換成 "&nbsp標簽"
-			content = '&nbsp;'.join(content_change_line.split(' '))
+			# 文字存入資料庫的轉換處理 以正常渲染到模板上
 			# 把修改後的content存入topic表中
-			topic.content = content
+			topic.content = views_tool.text_to_database(request.form.get('content'))
 
 
 			# 若有夾帶檔案則執行以下代碼
@@ -298,12 +288,9 @@ def release_views():
 			# 創建topic表數據
 			topic = Topic()
 
-			# 將獲取到的 "換行" 替換成 "br標簽"
-			title_change_line = '<br>'.join(request.form.get('author').split('\n'))
-			# 將獲取到的 "空格" 替換成 "&nbsp;"
-			title = '&nbsp;'.join(title_change_line.split(' '))
+			# 文字存入資料庫的轉換處理 以正常渲染到模板上
 			# 把修改後的title存入topic表中
-			topic.title = title
+			topic.title = views_tool.text_to_database(request.form.get('author'))
 
 			# 獲取發表文章資訊相關的內容
 			topic.blogtype_id = request.form.get('list')
@@ -311,12 +298,9 @@ def release_views():
 			topic.user_id = session.get('uid')
 			topic.pub_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
-			# 將獲取到的 "換行" 替換成 "br標簽"
-			content_change_line = '<br>'.join(request.form.get('content').split('\n'))
-			# 將獲取到的 "空格" 替換成 "&nbsp標簽"
-			content = '&nbsp;'.join(content_change_line.split(' '))
+			# 文字存入資料庫的轉換處理 以正常渲染到模板上
 			# 把修改後的content存入topic表中
-			topic.content = content
+			topic.content = views_tool.text_to_database(request.form.get('content'))
 
 			# 若有夾帶檔案則執行以下代碼
 			rf = request.files.get('picture')
@@ -408,7 +392,7 @@ def info_views():
 @main.route('/delete_topic')
 def delete_user():
 	# 判斷若沒有站長權限 則重定向到本篇文章
-	user = User.query.filter_by(id=request.cookies.get('uid')).first()	
+	user = User.query.filter_by(id=session.get('uid')).first()	
 	if user.is_author != 1:
 		return redirect('/info?topic_id='+str(topic_id))
 	
@@ -455,11 +439,12 @@ def list_date_views():
 	# 生成該文章的所有相關數據並轉換為Json格式
 	topics_list = []
 	for topic in topics:
+
 		topic_dic = topic.to_dict()
 		topic_dic['user_uname'] = topic.user.uname
 		topic_dic['category_cate_name'] = topic.category.cate_name
-		print(topic_dic)
-		print(len(topic_dic))
+		# print(topic_dic)
+		# print(len(topic_dic))
 		topics_list.append(topic_dic)
 
 	# 組合成js函數名及傳入的參數的字符串

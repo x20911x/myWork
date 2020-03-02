@@ -21,13 +21,16 @@ def every_views():
 	if 'uid' in session and 'uname' in session:
 		uname = session.get('uname')
 		# use user to identify
-		user = User.query.filter_by(id=session['uid']).first()
+		# user = User.query.filter_by(id=session['uid']).first()
 	
 	# 獲取client端的cookie是否有登錄過的資訊
-	if 'uid' in request.cookies and 'uname' in request.cookies:
+	elif 'uid' in request.cookies and 'uname' in request.cookies:
+		# 將cookies的uid, uname 重新存入session
+		session['uid'] = request.cookies['uid']
+		session['uname'] = request.cookies['uname']
 		uname = request.cookies.get('uname')
 		# use user to identify
-		user = User.query.filter_by(id=request.cookies['uid']).first()
+		# user = User.query.filter_by(id=request.cookies['uid']).first()
 
 	# 查詢所有文章以用於特別推薦
 	topics = Topic.query.all()
@@ -82,3 +85,26 @@ def password_check(password,password2):
 	  'msg' : '密碼不一致'
 	})
 	return data
+
+# 文字存入資料庫的轉換處理 以正常渲染到模板上
+def text_to_database(content):
+	# < 以&lt; 替代 > 以&gt; 替代
+	content = '&lt;'.join(content.split('<'))
+	# content = '&gt;'.join(content.split('>'))
+	# 將獲取到的 "換行" 替換成 "br標簽"
+	content = '<br>'.join(content.split('\n'))
+	# 將獲取到的 "空格" 替換成 "&nbsp標簽"
+	content = '&nbsp;'.join(content.split(' '))
+	return content
+
+
+# 文字從資料庫取出的預處理
+def database_to_text(content):
+	# 將獲取到的 "br標簽" 替換成 "換行" 
+	content = '\n'.join(content.split('<br>'))	
+	# 將獲取到的 "&lt;標簽" 替換成 "<"
+	content = '<'.join(content.split('&lt;'))	
+	# 將獲取到的 "&nbsp標簽" 替換成 "空格"
+	content = ' '.join(content.split('&nbsp;'))
+	return content
+
