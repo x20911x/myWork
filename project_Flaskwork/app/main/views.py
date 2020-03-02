@@ -363,11 +363,6 @@ def info_views():
 		# 創建立reply表的一條數據
 		reply = Reply()
 
-		# 將獲取到的 "換行" 替換成 "br標簽"
-		content_change_line = '<br>'.join(request.form.get('content').split('\n'))
-		# 將獲取到的 "換行" 替換成 "br標簽"
-		content = '&nbsp'.join(content_change_line.split(' '))
-
 		# 獲取當前時間日期
 		reply_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -377,7 +372,9 @@ def info_views():
 		topic_id = int(request.form.get('article'))
 
 		# 在回覆表中插入數據
-		reply.content = content
+		# 文字存入資料庫的轉換處理 以正常渲染到模板上
+		# 把修改後的content存入reply表中
+		reply.content = views_tool.text_to_database(request.form.get('content'))
 		reply.reply_time = reply_time
 		reply.user_id = user_id
 		reply.topic_id = topic_id
