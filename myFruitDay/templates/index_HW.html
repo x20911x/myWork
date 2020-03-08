@@ -1,0 +1,263 @@
+{% load static%}
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'css/index_HW.css' %}">
+ {% block css_js %}
+ {% endblock %}
+  <script src="/static/js/jquery-1.11.3.js"></script>
+  <script src="{% static 'js/index_HW.js' %}"></script>
+  
+ </head>
+ <body>
+	<!-- 页面结构划分-->
+	<div id="container" class="container">
+		<!-- 1. 导航--><!-- 1、网页头部 -->
+		<div id="nav">
+			<!-- 1.1 右侧导航-->
+			<ul class="rightNav">
+				<li id="login">
+
+				</li>
+				<li>
+					<b></b> <!--使用空的文本標籤直接設定邊框 -->
+					<a href="{% url 'index' %}">果園首頁</a>
+				</li>
+				<li id="cart">
+					<!-- <b></b>  --><!--使用空的文本標籤直接設定邊框 -->
+					<!-- <a href="{% url 'carts_render' %}">購物車</a> -->
+				</li>
+
+<!-- 				<li>
+					<b></b>
+					<a href="#">券卡兌換</a>
+				</li>
+				<li>
+					<b></b>
+					<a href="#">手機果園</a>
+				</li> -->
+			</ul>
+
+			<!-- 1.2 左侧导航-->
+			<!-- <ol class="leftNav">
+		
+				<li class="address">
+					<span class="currentAddress">上海</span> -->
+					<!-- 三角标-->
+					<!-- <u></u>
+					<ul class="select">
+						<li>北京</li>
+						<li>广州</li>
+						<li>深圳</li>
+					</ul>
+				</li>
+				<li>满百包邮（含郊区）</li>
+				<li>星夜达</li>
+			</ol> -->
+		</div>
+		<!-- 2. 橫幅 -->
+		<div id="banner">
+			<!-- 圖片輪播 -->
+			<div class = "wrapper">
+				<img id="ba" src="{% static 'images/banner1.jpg' %}">
+				<img id="ba" src="{% static 'images/banner2.jpg' %}">
+				<img id="ba" src="{% static 'images/banner3.jpg' %}">
+				<div id = "circle">
+					<span><a href="#">1</a></span>
+					<span><a href="#">2</a></span>
+					<span><a href="#">3</a></span>
+				</div>
+				
+			</div>
+		</div>
+		<!-- 3. 今日推薦 -->
+		<div id="adv">
+			<a href="#">
+				<img src="{% static 'images/2ba20598135dbba5e97d241ebfa167d9.jpg' %}">
+			</a>
+			<a href="#">
+				<img src="{% static 'images/2ba20598135dbba5e97d241ebfa167d9.jpg' %}">
+			</a>
+			<a href="#">
+				<img src="{% static 'images/2ba20598135dbba5e97d241ebfa167d9.jpg' %}">
+			</a>
+			<a href="#">
+				<img src="{% static 'images/2ba20598135dbba5e97d241ebfa167d9.jpg' %}" class="lastImg">
+			</a>
+		</div>
+		<!-- 4. 主體訊息 -->
+		{% block main %}
+		<div id = "index_main" class="goodsClass" >
+			<!-- 生活卡券 -->
+			<!-- 上方 禮品卡券部分 -->
+			<!-- <div class="item">
+				<p class="">禮品卡券</p>
+				<a href="#">更多</a>
+			</div> -->
+
+
+			<!-- 下方 商品訊息展示 -->
+
+			<!-- <ul>
+				<li>
+					<p>
+						<img src="{% static 'images/1-270x270-419-TPSKW6SP.jpg' %}">
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+				<li>
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+				<li>
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+				<li>
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+				<li class="no-margin">
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+
+			<li>
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+				<li>
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+				<li>
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+				<li>
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+				<li class="no-margin">
+					<p>
+						<img src="{% static 'images/1-270x270-430-9RBRWTU9.jpg' %}">
+
+					</p>
+					<div class="content">
+						<a href="#">
+							<img src="{% static 'images/cart.png' %}">
+						</a>
+						<p>歡樂時光水果禮籃</p>
+						<span>
+							$188.00/份
+						</span>
+					</div>
+				</li>
+			</ul> --> 
+		</div>
+		{% endblock %}
+		<!-- 底部訊息 -->
+		<!-- 主体信息模块高度为零（子元素全部浮动），影响底部模块布局，需要清除浮动
+			1. 由于主体信息可以动态加载，不能固定高度
+			2. 可以给父元素设置overflow :hidden;
+			3. 也可以设置清除浮动：为父元素末尾添加空的块级标签，设置clear:both; -->
+<!-- 		<div id = "bottom">
+		</div> -->
+
+	</div>
+ <body>
