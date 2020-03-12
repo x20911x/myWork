@@ -228,7 +228,7 @@ function getTotalCost(){
     // console.log(i,':',$(this).html())
   });
 
-  $('#all_cost').html(total_cost);
+  $('#all_cost').html(total_cost.toFixed(1));
 }
 
 
@@ -260,7 +260,7 @@ function plusFunc(cart_id){
   // 找到該筆訂單的價格 將它更新為新的價格
   console.log('total_cost:', total_cost);
   // 將價格欄位修改維新的價格
-  $('#total_cost_'+cart_id).html(total_cost);
+  $('#total_cost_'+cart_id).html(total_cost.toFixed(1));
 
   getTotalCost()
 
@@ -287,7 +287,7 @@ function minusFunc(cart_id){
     // 找到該筆訂單的價格 將它更新為新的價格
     // console.log('total_cost:', total_cost);
     // 將價格欄位修改維新的價格
-    $('#total_cost_'+cart_id).html(total_cost);
+    $('#total_cost_'+cart_id).html(total_cost.toFixed(1));
     getTotalCost()
     }
 }
@@ -318,7 +318,7 @@ function modifyDetect(){
       var ccount = data_from_backend.ccount;
       var price = Number($('#single_price_'+cart_id).html());
       var total_cost = price * ccount;
-      $('#total_cost_'+cart_id).html(total_cost);
+      $('#total_cost_'+cart_id).html(total_cost.toFixed(1));
       getTotalCost();
   },'json');
 }

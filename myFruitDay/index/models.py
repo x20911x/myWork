@@ -54,7 +54,7 @@ class Goods(models.Model):
   )
   price = models.DecimalField(
     max_digits=7,
-    decimal_places=2,
+    decimal_places=1,
     verbose_name='商品價格'
   )
   spec = models.CharField(
