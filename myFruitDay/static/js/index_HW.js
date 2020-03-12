@@ -5,7 +5,6 @@
 // 		imG.setAttribute('src',imgArray[i]);
 // 	}
 // }
-
 // // 請教老師此種解法
 // window.onload =function(){	
 // 	var timer;
@@ -19,20 +18,19 @@
 // 	}
 // }
 
-
 window.onload = function (){
 	// 1. 獲取元素節點
-	var currentAddr = document.getElementsByClassName('currentAddress')[0];
-	var select = document.getElementsByClassName('select')[0];
-	// ---------------下拉式選單-----------------
-	// 獲取 包含各城市的ul列表
-	var address = select.children;
-	for (var i =0; i < address.length; i++){
-		address[i].onclick = function(){
-			// 傳值
-			currentAddr.innerHTML = this.innerHTML;
-		};
-	}
+	// var currentAddr = document.getElementsByClassName('currentAddress')[0];
+	// var select = document.getElementsByClassName('select')[0];
+	// // ---------------下拉式選單-----------------
+	// // 獲取 包含各城市的ul列表
+	// var address = select.children;
+	// for (var i =0; i < address.length; i++){
+	// 	address[i].onclick = function(){
+	// 		// 傳值
+	// 		currentAddr.innerHTML = this.innerHTML;
+	// 	};
+	// }
 
 	// ---------------圖片輪播----------------
 	// 多設置一個div標籤 以設置獲取所有圖片子節點
@@ -73,13 +71,15 @@ window.onload = function (){
 };
 
 
-
-
-// 異步向服務器發送請求 檢查用戶是否處於登錄狀態
+// 向服務器發送請求 檢查用戶是否處於登錄狀態
 function check_login(){
+	console.log('function checking')
+	// 使用同步以確保購物車狀態符合實際
+	$.ajaxSettings.async = false;
 	$.get('/check-login/',function(data){
 		var html = "";
 		console.log('check_login ing~');
+		// 若狀態碼為0 ： 未登錄,1 : 使用者登錄
 		if(data.loginStatus == 0){
 			html += "<a href='/login'>[登錄]</a>";
 			html += "<a style='margin-left:5px' href='/register'>[註冊, 有驚喜]</a>";
@@ -88,13 +88,15 @@ function check_login(){
 			html += "<a style='margin-left:5px' href='/logout'>| 退出</a>";
 		}
 		$("#login").html(html);
+		// 確認登錄狀態後更新購物車顯示數量
+		cart_status();
 	},'json');
 }
 
 
 // 自動加載各個商品種類及其商品
 function loadGoods(){
-  $.get('/load_type_goods/',function(data){
+  $.get('/type_goods/',function(data){
     // data 為響應回來的json數據
     var show = "";
     $.each(data, function(i,obj){
@@ -105,16 +107,19 @@ function loadGoods(){
       // console.log(good_type_json ,good_type_json.title);
 	  
       // 加載商品類型
-      show += "<div class='item' style='height:30px;width:100%;overflow:hidden;'>"
+      show += "<div id='good_type_div"+ good_type_json.type_id +
+      "' class='item' style='height:30px;width:100%;overflow:hidden;'>"
         show += "<p>"
         show += good_type_json.title
         show += "</p>"
-        show += "<a href=''>"
+        show += "<a href='javascript:add_other_goods(" + good_type_json.type_id + ")'>"
         show += '更多'
         show += "</a>"       
       show += "</div>"
-      show += "<ul>"
+
+      show += "<ul id='good_type_ul_top"+ good_type_json.type_id+ "'>"
 	  $.each(good_json, function(i,obj){
+
 	  	  show += "<li "
 	  	  if ((i+1)%5==0){
 	  	  	show += "class='no-margin'";
@@ -135,14 +140,136 @@ function loadGoods(){
 	  	      show += "</span>"
 	  	    show += "</div>"
 	  	  show += "</li>"
+
       });
       show += "</ul>"
 
     });
-    
+    // 將文本轉換為標籤加入元素節點
     $('#index_main').html(show);
   }, 'json');
 }
+
+// 加載此商品類型原本加載的其餘所有商品
+function add_other_goods(type_id){
+  console.log('click~~~')
+  $.get('/other_goods/',
+  	
+  	{'type_id': type_id},
+  	
+  	function(goods_json){
+  	  console.log(goods_json);
+  	  
+  	  var show = '<ul id="good_type_ul_bottom' + type_id + '">';
+	  $.each(goods_json, function(i,obj){
+
+
+	  	  show += "<li "
+	  	  if ((i+1)%5==0){
+	  	  	show += "class='no-margin'";
+	  	  }
+	  	  show += ">"
+	  	    show += "<p>"
+	  	      show += "<img src='/"+obj.fields.picture+"'>"
+	  	    show += "</p>"
+
+	  	    show += "<div class='content'>"
+	  	    // 拼參數時要注意單雙引號
+	  	      show += "<a href='javascript:add_cart("+ obj.pk + ', "'+obj.fields.title+'");' +"'>"
+	  	        show += "<img src='/static/images/cart.png'>"
+	  	      show += "</a>"
+	  	      show += "<p>"+obj.fields.title
+	  	      show += "</p>"
+	  	      show += "<span>$"+obj.fields.price+'/'+obj.fields.spec
+	  	      show += "</span>"
+	  	    show += "</div>"
+	  	  show += "</li>"
+
+	  	  // show += 'test~~~'
+      });
+	  show += "</ul>"
+
+      // jQuery創建對象
+	  $show = $(show);
+  	
+	// 將jQuery對象添加到元素節點後面
+  	$('#good_type_ul_top'+type_id).after($show);
+
+  	// 獲取商品類型導航條元素節點內容
+  	var more_nav = '';
+  	more_nav += '<a href="javascript:add_other_goods(' + type_id + ')">'
+    more_nav += '更多'
+    more_nav += "</a>"
+
+    var less_nav = '';
+  	less_nav += '<a href="javascript:hide_other_goods(' + type_id + ')">'
+    less_nav += '隱藏'
+    less_nav += "</a>"
+    console.log(more_nav);
+
+    // 將更多替換為縮小 同時改變連結觸發的js函數
+  	var before = $('#good_type_div'+type_id).html();
+  	console.log(before);
+  	var after = before.replace(more_nav,less_nav);
+  	console.log(after);
+
+  	$('#good_type_div'+type_id).html(after);
+  	console.log('click more >>> type_id:', type_id);
+
+  }, 'json');
+}
+
+// 隱藏新的添加顯示的商品
+function hide_other_goods(type_id){
+  console.log('hiding')
+
+  // 隱藏 "更多" 及底部生成的商品元素
+  // $('#good_type_ul_bottom'+type_id).remove()
+  $('#good_type_ul_bottom'+type_id).css('display','none')
+
+  // 獲取商品類型導航條元素節點內容
+  var less_nav = '';
+  less_nav += '<a href="javascript:hide_other_goods(' + type_id + ')">'
+  less_nav += '隱藏'
+  less_nav += "</a>"
+
+  var more_nav = '';
+  more_nav += '<a href="javascript:recover_other_goods(' + type_id + ')">'
+  more_nav += '更多'
+  more_nav += "</a>"
+
+  // 將'縮小'替換為'更多' 同時改變連結觸發的js函數
+  var before = $('#good_type_div'+type_id).html();
+
+  var after = before.replace(less_nav,more_nav);
+
+  $('#good_type_div'+type_id).html(after);
+}
+
+// 將隱藏的商品恢復回來
+function recover_other_goods(type_id){
+	// 恢復 "隱藏" 及底部生成的商品元素
+	$('#good_type_ul_bottom'+type_id).css('display','block');
+  	// 獲取商品類型導航條元素節點內容
+  	var more_nav = '';
+  	more_nav += '<a href="javascript:recover_other_goods(' + type_id + ')">'
+    more_nav += '更多'
+    more_nav += "</a>"
+
+    var less_nav = '';
+  	less_nav += '<a href="javascript:hide_other_goods(' + type_id + ')">'
+    less_nav += '隱藏'
+    less_nav += "</a>"
+
+    // 將更多替換為縮小 同時改變連結觸發的js函數
+  	var before = $('#good_type_div'+type_id).html();
+  	var after = before.replace(more_nav,less_nav);
+
+  	$('#good_type_div'+type_id).html(after);
+}
+
+
+
 
 // 點擊後添加購物商品到購物車內並將相關資訊儲存在資料庫
 function add_cart(good_id,good_title){
@@ -158,6 +285,7 @@ function add_cart(good_id,good_title){
 				alert(save.uname+'保存'+good_title+'到購物車');
 			},'json');
 		}
+		// 添加完商品後更新購物車顯示數量
 		cart_status();
 	},'json');
 }	

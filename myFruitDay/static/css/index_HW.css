@@ -240,3 +240,10 @@ img{
 }
 
 
+#index_main div.item>a{
+	font-size: 20px;
+}
+
+#index_main div.item>p{
+	font-size: 32px;
+}

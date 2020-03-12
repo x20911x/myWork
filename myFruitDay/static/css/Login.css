@@ -1,0 +1,138 @@
+body{
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
+
+#container> div.left{
+	float: left;
+	position: relative;
+	left:150px;
+}
+
+
+
+.right {
+	width: 500px;
+	height: 400px;
+	float: right;
+	margin-top : 130px;
+	margin-right: 150px;
+}
+.form-control{
+	width: 200px;
+	height: 40px;
+	float: right;
+}
+
+.form-line{
+	/*float:right;*/
+	width: 500px;
+	height: 20px;
+	margin-top:0px;
+	/*margin-right: 100px;*/
+
+	/*margin-bottom: 50px;*/
+}
+
+.l1{
+	float: left;
+	color: #999;
+	width: 64px;
+	/*跟输入框高度保持一致*/
+	height: 50px;
+	text-align: right;
+	line-height: 40px;
+	padding-left: 60px;
+}
+.r1{
+	float: right;
+	color: #999;
+	width: 300px;
+	height: 50px;
+	/*跟输入框高度保持一致*/	
+	text-align: right;
+	line-height: 40px;
+}
+
+.input1{
+	font-size: 20px;
+	width: 300px;
+	height: 25px;
+}
+
+.ll1{
+	float: left;
+	width: 100px;
+	height: 40px;
+}	
+.lr1{
+	float: right;
+	width: 200px;
+	height: 40px;
+}
+
+/*.form-line ,.form-line div,.form-line div.c1{
+	float: right;
+	width:300px;
+	line-height: 40px;
+	margin-right: 10px;
+	font-size: 16px;
+	ma
+}*/
+#ccc{
+	margin-top:0;
+}
+/*.isSaved{
+	width:13px;
+	height:13px;
+	vertical-align:middle;
+	font-size: 13px;
+*/
+/*oat: right;
+	text-decoration:none;
+	font-size: 13px;
+}*/
+
+.loginBtn,.registBtn{
+	display: inline-block;
+	box-sizing:border-box;
+	width:145px;
+	height:38px;
+	border:1px solid #64a131;
+	/*text-align:center;*/
+	line-height:38px;
+	border-radius:5px;
+	/*統一設置字體大小*/
+	font-size:18px;
+	text-align: center;
+	text-decoration:none;
+}
+
+.registBtn{
+	float:right;	
+	color:#64a131;
+}
+.loginBtn{
+	background-color:#64a131;
+	color:#fff;	
+}
+
+
+#container>.left{
+	float:left;
+	position:relative;
+}
+#container>.left>a{
+	position:absolute;
+	width:145px;
+	height:44px;
+	border:1px solid #85b55c;
+	text-align:center;
+	line-height:44px;
+	border-radius:5px;
+	text-decoration:none;
+	color:#85b55c;
+	bottom:60px;
+	left:225px;
+}

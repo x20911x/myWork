@@ -34,6 +34,7 @@ class GoodsType(models.Model):
 
   def to_dict(self):
     dic = {
+      'type_id':self.id,
       'title':self.title,
       'picture':self.picture.__str__(),
       'desc':self.desc,

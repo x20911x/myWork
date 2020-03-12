@@ -13,36 +13,34 @@ from django.db.models import *
 
 # Create your views here.
 def index_views(request):
-	# user = ""
-	# # 判斷是否有session 有session則返回首頁
-	# if 'uid' in request.session and 'uphone' in request.session:
-	# 	user = User.objects.filter(id=request.session.get('uid'))
-
-	# # # 判斷是否有Cookie 有Cookie則將使用者存入session後返回首頁
-	# if 'uid' in request.COOKIES and 'uphone' in request.COOKIES:
-	# 	# request.session
-	# 	user = User.objects.get(id=request.COOKIES.get('uid'))
-	
 	return render(request, 'index_HW.html', locals())
 
-
-# # 檢查 session 中是否有登錄訊息 
+# Ajax from index_Hw.js check_login()檢查是否有登錄過 
 def check_login_views(request):
-  if 'uid' in request.session and 'uphone' in request.session:
-    loginStatus = 1
-    #通过uid的值获取对应的uname
-    id = request.session['uid']
-    uname=User.objects.get(id=id).uname
-    dic = {
-      'loginStatus':loginStatus,
-      'uname':uname
-    }
-    return HttpResponse(json.dumps(dic))
-  else:
-    dic = {
-      'loginStatus':0
-    }
-    return HttpResponse(json.dumps(dic))
+	# 若登錄者保存在session中 代表處於登錄狀態
+	if ('uid' in request.session and 'uphone' in request.session):
+		id = request.session['uid']
+		uname=User.objects.get(id=id).uname
+		dic = {
+	  		'loginStatus': 1,
+	  		'uname':uname
+		}
+	# 判斷是否有Cookie 有Cookie則將使用者存入session後返回		
+	elif ('uid' in request.COOKIES and 'uphone' in request.COOKIES):
+		request.session['uphone'] = request.COOKIES['uphone']
+		request.session['uid'] = request.COOKIES['uid']
+
+		id = request.COOKIES['uid']
+		uname=User.objects.get(id=id).uname
+		dic = {
+	  		'loginStatus': 1,
+	  		'uname':uname
+		}
+	else:
+		dic = {
+	  		'loginStatus': 0
+		}
+	return HttpResponse(json.dumps(dic))
 
 
 # 註冊功能
@@ -58,11 +56,15 @@ def register_views(request):
 	else:
 		# 聲明響應對象 
 		url = request.COOKIES.get('url','/')
+
+		# 如果從"登錄頁"過來"註冊頁"則註冊後後返回首頁
+		if url == ('http://%s/login/'% request.get_host()):
+			url = '/'		
 		resp = redirect(url)
 		# 從響應對象resp中刪除保存在cookies的url
 		if 'url' in request.COOKIES:
 			resp.delete_cookie('url')
-		print('ok')
+
 		user = User()
 		# 註冊模板繼承自登錄模板 控鍵避免重名子 否則 unreachable code after return statement
 		user.uphone = request.POST.get('uphone')
@@ -78,31 +80,35 @@ def register_views(request):
 		print(request.session)
 		return resp
 
-# 使用form模塊生成表單控件
+# 使用form模塊生成login表單控件
 def login_views(request):
 	# 判斷是get or post 請求
 	if request.method == 'GET':
 		# 獲取重定向的url, (前面一頁面或首頁)
 		url = request.META.get('HTTP_REFERER','/')
+		print('url in cookies at get request:',url)
 		resp = redirect(url)
 		# 將前一個頁面或首頁url存入cookie
 		resp.set_cookie('url', url, 60*60*24*7)
 
-		# 判斷是否有session 有session則返回首頁
+		# 判斷是否有session 有session則返回
 		if 'uid' in request.session and 'uphone' in request.session:
 			return resp
 
-		# 判斷是否有Cookie 有Cookie則將使用者存入session後返回首頁
+		# 判斷是否有Cookie 有Cookie則將使用者存入session後返回
 		if 'uid' in request.COOKIES and 'uphone' in request.COOKIES:
 			request.session['uphone'] = request.COOKIES['uphone']
 			request.session['uid'] = request.COOKIES['uid']
-			return resp	
-
+			return resp
 
 		# 若沒有session 或 COOKIE 則返回首頁
 		# 聲明一個帶有小部件的Form
 		form = LoginForm()
-		return render(request,'Homework-5test.html',locals())
+
+		resp = render(request,'Login.html',locals())
+		# 將前一個頁面或首頁url存入cookie
+		resp.set_cookie('url', url, 60*60*24*7)		
+		return resp
 		
 	else:
 		# 通過自動接收據
@@ -114,6 +120,11 @@ def login_views(request):
 
 			# 聲明響應對象 
 			url = request.COOKIES.get('url','/')
+
+			# 如果從"註冊頁"過來"登錄頁"則登錄後返回首頁
+			if url == ('http://%s/register/'% request.get_host()):
+				url = '/'
+
 			resp = redirect(url)
 			# 從響應對象resp中刪除保存在cookies的url
 			if 'url' in request.COOKIES:
@@ -134,8 +145,8 @@ def login_views(request):
 				return resp
 			# 登錄失敗
 			else:
-				form = LoginForm()
-				return render(request,'Homework-5test.html',locals())
+
+				return render(request,'Login.html',locals())
 
 			# print(repr(**form.cleaned_data))
 			# user = User(**form.cleaned_data)
@@ -144,6 +155,7 @@ def login_views(request):
 		return HttpResponse('驗證失敗 表單提交錯誤')
 
 
+# 處理用戶登出
 def logout_views(request):
 	# 設定重定向的url, 回到前面一頁面或首頁
 	url = request.META.get('HTTP_REFERER','/')
@@ -172,37 +184,33 @@ def loginname_check_views(request):
 	users = User.objects.filter(uphone=uphone)
 
 	# method $.ajax
-	# if users:
-	# 	data = json.dumps({
-	# 		'msg' :'手機號碼已經存在'
-	# 	})
-	# else:
-	# 	data = json.dumps({
-	# 		'msg' :'此號碼可以使用'
-	# 	})
-
-	# print('cb',cb)
-	# print('uphone',uphone)
-	# print(data)
-	# # 組合成js函數名及傳入的參數的字符串
-	# return HttpResponse(cb+"("+data+")")
-	# ------------Another method---------------
 	if users:
-		status = 1
-		msg = '手機號碼已經存在' 
+		data = json.dumps({
+			'msg' :'手機號碼已經存在'
+		})
 	else:
-		status = 0
-		msg = '此號碼可以使用'
-	dic = {'status':status,'msg':msg}
-	print(dic,type(dic))
-	return HttpResponse(json.dumps(dic))
+		data = json.dumps({
+			'msg' :'此號碼可以使用'
+		})
+	print('cb',cb)
+	print('uphone',uphone)
+	print(data)
+	# 組合成js函數名及傳入的參數的字符串
+	return HttpResponse(cb+"("+data+")")
+	# ------------Another method---------------
+	# if users:
+	# 	status = 1
+	# 	msg = '手機號碼已經存在' 
+	# else:
+	# 	status = 0
+	# 	msg = '此號碼可以使用'
+	# dic = {'status':status,'msg':msg}
+	# print(dic,type(dic))
+	# return HttpResponse(json.dumps(dic))
 	# ----------------------------------------
 
 
-# def test_views(request):
-# 	return render(request,'test.html')
-
-
+# 加載所有的商品類型和前面5個商品
 def type_goods_views(request):
 	all_list = []
 	# 加載所有的商品類型
@@ -211,21 +219,43 @@ def type_goods_views(request):
 		# 將商品類型資訊轉為json
 		type_json = json.dumps(type.to_dict())
 		# print(type_json)
-		# 獲取type類型下該商品類型下的商品中最新的10條數據物件
-		goods_list = type.goods_set.order_by("-id")[0:10]
-		print(goods_list)
+		# 獲取type類型下該商品類型下的商品中最新的5條數據物件
+		goods_list = type.goods_set.order_by("-id")[0:5]
+
+
 		# 將g_list轉為json
 		goods_json = serializers.serialize('json', goods_list)
-		# print(goods_json)
+
 		# 將type_json 和 goods_json封裝到字典內
 		dic = {
 			"type":type_json,
 			"goods":goods_json
 		}
 		all_list.append(dic)
+	# 將json數據交給前端
 	return HttpResponse(json.dumps(all_list))
 
 
+# 加載此商品類型原本加載的其餘所有商品
+def load_other_goods_views(request):
+	print('backend load other goods')
+	# 獲取商品類型id
+	type_id = request.GET.get('type_id')
+
+	# 獲取此商品類型的數據物件
+	type = GoodsType.objects.get(id=type_id)
+
+	# 獲取type類型下該商品類型下的商品中第5條以後的數據物件
+	goods_list = type.goods_set.order_by("-id")[5:]
+
+	# 將物件列表序列化為json格式
+	goods_json = serializers.serialize('json', goods_list)
+
+	# 將json數據交給前端
+	return HttpResponse(goods_json)
+
+
+# 添加商品數量
 def carts_index_views(request):
 	uid = request.session.get('uid')
 	good_id = request.GET.get('good_id')
@@ -259,9 +289,11 @@ def carts_index_views(request):
 
 	# 將用戶名子存入字典		
 	dic['uname'] = user.uname
+
+	# 將json數據交給前端
 	return HttpResponse(json.dumps(dic))
 
-
+# 購物車資料
 def carts_json_views(request):
 	uid = request.session.get('uid')
 	# 加載該使用者 所有的購物車訂單
@@ -286,11 +318,10 @@ def carts_json_views(request):
 		  'good': good_json,
 		  'cart': cart_json,
 		  'total_cost':total_cost,
-
 		}
-		# print(dic,end='\n\n')
+
 		all_list.append(dic)
-	# return HttpResponse('okkk')
+	# 將json數據交給前端
 	return HttpResponse(json.dumps(all_list))
 
 
@@ -299,7 +330,7 @@ def carts_render_views(request):
 	return render(request,'cart.html',locals())
 
 
-# Ajax 刪除購物車內容
+# Ajax from cart.js delete_cart(cart_id)刪除購物車內容
 def delete_cart_views(request):
 	cart_id = request.GET.get('cart_id')
 	print('cart_id:',cart_id)
@@ -308,20 +339,43 @@ def delete_cart_views(request):
 	cart.delete()
 	return HttpResponse('ok')
 
-# Ajax 確認購物車訂單數量
+# Ajax from index_HW.js cart_status() 確認購物車訂單數量
 def check_cart_views(request):
-	# 計算所有訂單的數量
-    cart_info =CartInfo.objects.all().count()
+	# 若沒有登錄, 則購物車數量顯示0
+	cart_info = 0
 
-    dic = {
+	if ('uid' in request.session and 'uphone' in request.session)\
+	 or ('uid' in request.COOKIES and 'uphone' in request.COOKIES):		
+		# 計算所有訂單的數量
+	    cart_info =CartInfo.objects.filter(user_id=request.session.get('uid')).count()
+
+	dic = {
       'carts_total':cart_info,
     }
-    return HttpResponse(json.dumps(dic))
+    # 將json數據交給前端
+	return HttpResponse(json.dumps(dic))
 
-# Ajax 修改購物車訂單數量
+# Ajax from index_HW.js modify_cart(cart_id)修改購物車訂單數量
 def modify_cart_views(request, cart_id):
+	# 獲取該比訂單 並轉為字典格式
+	cart_info =CartInfo.objects.get(id=cart_id).to_dict()
 
+	# 如果點擊加法按鈕
+	if request.GET.get('add_minus') == 'A':
+		print('點擊加法按鈕')
+		CartInfo.objects.filter(id=cart_id).update(ccount=F('ccount')+1)
+	
+	# 如果點擊減法按鈕
+	if request.GET.get('add_minus') == 'M':
+		print('點擊減法按鈕')
+		CartInfo.objects.filter(id=cart_id).update(ccount=F('ccount')-1)
+	
+	if request.GET.get('add_minus') == 'I':
+		print("輸入")
+		CartInfo.objects.filter(id=cart_id).update(ccount = int(request.GET.get('value')))
 	# 獲取該比訂單物件並將其屬性轉為字典格式
 	cart_info =CartInfo.objects.get(id=cart_id).to_dict()
 
+	# 將json數據交給前端
 	return HttpResponse(json.dumps(cart_info))
+

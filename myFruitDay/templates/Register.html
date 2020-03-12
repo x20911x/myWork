@@ -1,13 +1,13 @@
-{% extends 'Homework-5test.html'%}
+{% extends 'Login.html'%}
 
 
 
 {% block h2 %}
-  <h2>註冊會員</h2>
+  <h2 style="text-align: center">註冊會員</h2>
 {% endblock %}
 
 {% block anchor %}
-  <a href="#">會員登錄</a>
+  <a href="{% url 'login' %}">會員登錄</a>
 {% endblock %}
 
 {% block style %}
@@ -17,7 +17,7 @@
 			height: 400px;
 			float: right;
 			margin-top : 55px;
-			margin-right: 50px;
+			margin-right: 150px;
 		}
 	</style>
 {% endblock %}
@@ -36,11 +36,11 @@
 	</div>
 	<div class="form-line">
 		<div class="l1">密碼</div>
-		<div class="r1"><input class="input1" type="password" name="upwd" maxlength="30"></div>
+		<div class="r1"><input class="input1" type="password" name="upwd" placeholder= '請輸入您的密碼' maxlength="30"></div>
 	</div>
 	<div class="form-line">
 		<div class="l1">確認密碼</div>
-		<div class="r1"><input class="input1" type="password" name="" maxlength="30"></div>
+		<div class="r1"><input class="input1" type="password" name=""  placeholder= '請再次輸入您的密碼' maxlength="30"></div>
 	</div>
 	<div class="form-line">
 		<div class="l1">用戶名子</div>
@@ -50,7 +50,7 @@
 		<div class="l1">電子郵件</div>
 		<div class="r1"><input class="input1" type="text" name="uemail" maxlength="30" ></div>
 	</div>
-	<div class="form-line">
+<!-- 	<div class="form-line">
 		<div class="l1"></div>
 		<div class="r1">
 			<div class="ll1">
@@ -61,7 +61,7 @@
 				<a href="">快捷登入</a>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<div class="form-line">
 		<div class="l1"></div>
 		<div class="r1">

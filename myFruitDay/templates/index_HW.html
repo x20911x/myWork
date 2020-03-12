@@ -9,14 +9,14 @@
   <meta name="Description" content="">
   <title>Document</title>
   <link rel="stylesheet" href="{% static 'css/index_HW.css' %}">
- {% block css_js %}
- {% endblock %}
+
   <script src="/static/js/jquery-1.11.3.js"></script>
   <script src="{% static 'js/index_HW.js' %}"></script>
-  
+   {% block css_js %}
+ 	{% endblock %}
  </head>
  <body>
-	<!-- 页面结构划分-->
+	<!-- 頁面結構劃分-->
 	<div id="container" class="container">
 		<!-- 1. 导航--><!-- 1、网页头部 -->
 		<div id="nav">
@@ -30,36 +30,11 @@
 					<a href="{% url 'index' %}">果園首頁</a>
 				</li>
 				<li id="cart">
-					<!-- <b></b>  --><!--使用空的文本標籤直接設定邊框 -->
-					<!-- <a href="{% url 'carts_render' %}">購物車</a> -->
+					<!-- ajax動態加載 -->
 				</li>
 
-<!-- 				<li>
-					<b></b>
-					<a href="#">券卡兌換</a>
-				</li>
-				<li>
-					<b></b>
-					<a href="#">手機果園</a>
-				</li> -->
 			</ul>
 
-			<!-- 1.2 左侧导航-->
-			<!-- <ol class="leftNav">
-		
-				<li class="address">
-					<span class="currentAddress">上海</span> -->
-					<!-- 三角标-->
-					<!-- <u></u>
-					<ul class="select">
-						<li>北京</li>
-						<li>广州</li>
-						<li>深圳</li>
-					</ul>
-				</li>
-				<li>满百包邮（含郊区）</li>
-				<li>星夜达</li>
-			</ol> -->
 		</div>
 		<!-- 2. 橫幅 -->
 		<div id="banner">
@@ -82,13 +57,13 @@
 				<img src="{% static 'images/2ba20598135dbba5e97d241ebfa167d9.jpg' %}">
 			</a>
 			<a href="#">
-				<img src="{% static 'images/2ba20598135dbba5e97d241ebfa167d9.jpg' %}">
+				<img src="{% static 'images/904419aa2e364412b3c07c3cbda24ef9.jpg' %}">
 			</a>
 			<a href="#">
-				<img src="{% static 'images/2ba20598135dbba5e97d241ebfa167d9.jpg' %}">
+				<img src="{% static 'images/25af37592bf484fbeaef1cc4ff1e09c7.jpg' %}">
 			</a>
 			<a href="#">
-				<img src="{% static 'images/2ba20598135dbba5e97d241ebfa167d9.jpg' %}" class="lastImg">
+				<img src="{% static 'images/d72b849b461c08d991c265df00a1bfde.jpg' %}" class="lastImg">
 			</a>
 		</div>
 		<!-- 4. 主體訊息 -->

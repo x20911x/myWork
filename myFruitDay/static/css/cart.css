@@ -103,6 +103,8 @@ img{
     background-color:#f3f3f3;
     border:1px solid #e9e9e9;
     margin-top:20px;
+    font-weight: bolder;
+    color:black;
 }
 #main>div.title>p{
     float:left;
@@ -129,8 +131,14 @@ img{
 #main p.quantity>input.button{
 	display:block;
 	vertical-align: top;
-    text-align:center;
-    /*border-radius:50%;*/
+	background-color: #BFBFBF;
+    /*text-align:center;*/
+    padding-right: 15px;
+    padding-bottom: 5px;
+    padding-top:3px;
+    padding-left:10px;
+    border-radius:50%;
+    border:none;
     position: relative;
     left: 30px;
 }
@@ -142,9 +150,6 @@ img{
     position: relative;
     left: 26px;
 }
-
-
-
 
 
 #main p.t-sum{
@@ -164,7 +169,7 @@ img{
 }
 
 
-#good-content p.action>span>input{
+#good-content p.action>input{
 	float: top;
 
     height:40px;
@@ -182,12 +187,36 @@ img{
 	text-align: center;;
 }
 #main .g-item{
-    margin-top:20px;
+    margin-top:10px;
     overflow:hidden;
 }
 
 #good-content div.g-item{
     border-top:2px solid #999;
-    border-bottom:1px solid #999;
+    /*border-bottom:1px solid #999;*/
     padding:10px 0;
 }
+
+
+/*購物車底部金額加總資訊*/
+#good-content #cart_bottom>p.check-box{
+	width:132px;
+}
+
+
+#good-content #cart_bottom>p{
+	line-height: 40px;
+	height: 40px;
+	font-size: 20px;
+
+}
+
+#good-content #cart_bottom>p.goods{
+	width: 558px;
+	position: relative;
+	left:220px;
+
+
+}
+
+
