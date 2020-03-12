@@ -1,0 +1,84 @@
+{% extends 'Login.html'%}
+
+
+
+{% block h2 %}
+  <h2 style="text-align: center">註冊會員</h2>
+{% endblock %}
+
+{% block anchor %}
+  <a href="{% url 'login' %}">會員登錄</a>
+{% endblock %}
+
+{% block style %}
+	<style>
+		.right {
+			width: 500px;
+			height: 400px;
+			float: right;
+			margin-top : 55px;
+			margin-right: 150px;
+		}
+	</style>
+{% endblock %}
+
+
+
+{% block form %}
+<form id="formReg" class="right" action="/register/" method="post">
+	{% csrf_token %}
+	<div class="form-line">
+		<div class="l1">手機號</div>
+		<div class="r1"><input id="uphone" class="input1" style="margin-top: 10px" type="text" name="uphone" maxlength="15" ></div>
+		<!-- <p style="float:right;margin:0px 100px 0px 0px">{{ errMsg }}</p> -->
+		<p id="prompt" style="float:right;margin:0px 100px 0px 0px"></p>
+
+	</div>
+	<div class="form-line">
+		<div class="l1">密碼</div>
+		<div class="r1"><input class="input1" type="password" name="upwd" placeholder= '請輸入您的密碼' maxlength="30"></div>
+	</div>
+	<div class="form-line">
+		<div class="l1">確認密碼</div>
+		<div class="r1"><input class="input1" type="password" name=""  placeholder= '請再次輸入您的密碼' maxlength="30"></div>
+	</div>
+	<div class="form-line">
+		<div class="l1">用戶名子</div>
+		<div class="r1"><input class="input1" type="text" name="uname" maxlength="20" ></div>
+	</div>
+	<div class="form-line">
+		<div class="l1">電子郵件</div>
+		<div class="r1"><input class="input1" type="text" name="uemail" maxlength="30" ></div>
+	</div>
+<!-- 	<div class="form-line">
+		<div class="l1"></div>
+		<div class="r1">
+			<div class="ll1">
+				<input type="checkbox" name="isSaved" >記住密碼
+			</div>
+			<div class="lr1">
+				<a href="">忘記密碼</a>
+				<a href="">快捷登入</a>
+			</div>
+		</div>
+	</div> -->
+	<div class="form-line">
+		<div class="l1"></div>
+		<div class="r1">
+			<div id="reg" class="ll1">
+				<a class="loginBtn" href="{% url 'login' %}">登陸</a>
+			</div>			
+			<div class="lr1">
+				<input class="registBtn" type="submit" name="submit" value="註冊會員">	
+				<!-- <a  href="#">註冊會員</a> -->
+			</div>
+		</div>
+	</div>
+</form>
+{% endblock %}
+
+{% block script %}
+	<script src="/static/js/jquery-1.11.3.js"></script>
+	<script src="/static/js/register.js"></script>
+{% endblock %}
+<!-- <script src="/static/js/jquery-1.11.3.js"></script>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang=>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        p{
+            margin:0 auto,
+        }
+        div{
+            text-align : center
+        }
+    </style>
+</head>
+<body>
+    {% for t in tup %}
+     <div
+         {% if forloop.first %}
+         style="background-color:red"
+         {% elif forloop.last %}
+         style="background-color:blue"
+         {% else %}
+         style="background-color:green"
+         {% endif %}
+     >
+        <p>content:{{t|floatformat:2}}</p>
+        <p>index:{{forloop.counter0}}</p>
+        <p>times:{{forloop.counter}}</p>
+        <p>first:{{forloop.first}}</p>
+        <p>last:{{forloop.last}}</p><br>
+    </div>
+    {% endfor %}
+    <select>
+        {% for t in tup %}
+        <option value="{{ forloop.counter0}}" {% if forloop.counter == 2 %} selected="selected" {% endif %}>{{t}}</option>
+        {% endfor %}
+    </select>
+
+
+
+<!--    <h1 style="color:#f60;text-align:center;">Name:{{name}}</h1>-->
+<!--    <h1 style="color:#f60;text-align:center;">Age:{{age}}</h1>-->
+<!--    <h3 style="color:#f60;text-align:center;">tup:{{tup}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">tup[1]:{{tup.1}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">lis:{{lis}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">lis[0]:{{lis.0}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">dic:{{dic}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">dic[789]:{{dic.789}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">say:{{say}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">man:{{man}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">man.name:{{man.name}}</h3>-->
+<!--    <h3 style="color:#f60;text-align:center;">man.eat:{{man.eat}}</h3>-->
+
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+{% extends 'index_HW.html' %}
+
+{% block css_js %}
+   <link rel="stylesheet" href="/static/css/cart.css"/>  
+   <!-- <script src="/static/js/jquery-1.11.3.js"></script> -->
+   <script src="/static/js/jquery.cookie.js"></script>
+   <script src="/static/js/cart.js"></script>
+
+{% endblock %}
+
+		{% block main %}
+
+		<!-- 網頁主體內容(各種產品) -->
+		<div id="main">
+      <div class="title">
+        <p class="check-box">
+          <input type="checkbox" id="checkall">
+          全
+        </p>
+        <p class="goods">商品</p>
+        <p class="price">單價</p>
+        <p class="quantity">數量</p>
+        <p class="t-sum">小計</p>
+        <p class="action">操作</p>
+      </div>
+
+
+      <div id="good-content">
+        <div class="g-item">
+          <p class="check-box">
+            <!-- <input type="checkbox"> -->
+            <img src="images/1-270x270-430-9RBRWTU9.jpg" width="80px">
+          </p>
+          <p class="goods">松下（Panasonic</p>
+          <p class="price">&yen;169</p>
+
+          <p class="quantity">
+            <input class="button" type="button" style="width:20px" value="+" onclick="plusFunc()">
+            <input id="ccount" class="quan_text" type="text" name="ccount" style="width:25px" value="5">
+            <input class="button" type="button" style="width:20px" value="-" onclick="minusFunc()">
+          </p>
+          
+          <p class="t-sum">
+            <b>&yen;169</b>
+          </p>
+          <p class="action">
+            <a href="#">移除</a>
+          </p>
+        </div>
+
+        <div class="g-item">
+          <p class="check-box">
+            <input type="checkbox">
+            <img src="images/1-270x270-430-9RBRWTU9.jpg" width="80">
+          </p>
+          <p class="goods">松下（Panasonic</p>
+          <p class="price">&yen;169</p>
+          <p class="quantity">數量</p>
+          <p class="t-sum">
+            <b>&yen;169</b>
+          </p>
+          <p class="action">
+            <a href="#">移除</a>
+          </p>
+        </div>
+
+        <div id="cart_bottom" class="g-item">
+          
+          <p class="check-box"></p>
+
+          <p class="goods">您的消費金額一共是: </p>
+
+          <p class="t-sum">
+            <b>&yen;169</b>
+          </p>
+          <p class="action">
+            <a href="#">移除</a>
+          </p>
+      </div>
+
+
+
+		</div>
+		<!-- 網頁主體內容結束-->
+	{% endblock %}
+
+		
