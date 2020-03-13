@@ -19,5 +19,5 @@ urlpatterns = [
 	url(r'^check_cart/$',check_cart_views,name='check_cart'),
     url(r'^modify_cart/(\d+)/$',modify_cart_views,name='modify_cart'),
     url(r'^other_goods/$',load_other_goods_views,name='load_other'),
-
+    url(r'^goods_price_order/$',goods_price_order_views,name='goods_price_order'),
 ]

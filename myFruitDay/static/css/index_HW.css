@@ -170,7 +170,7 @@ img{
 }
 #index_main .item>p{
 	float: left;
-	line-height: 20px;
+	line-height: 60px;
 	font-size:20px;
 }
 #index_main .item>a{
@@ -181,11 +181,42 @@ img{
 #index_main .item>a:hover{
 	color:#64A131;
 }
+
+#index_main .item>table{
+	display: inline-block;
+	margin-left: 10px;
+	border-collapse: collapse;
+	font-weight: lighter;
+	color: #f60;	
+
+}
+
+#index_main .item>table th{
+	line-height: 52px;
+	font-size:20px;
+	padding: 0px 10px;
+	border: 2px solid #ccc;
+	text-align: center;
+}
+
+#index_main .item>table tr{
+	padding: 0px 10px;
+	/*background-color: #ccc;*/
+}
+
+#index_main .item>table th:hover{
+	/*padding: 0px 10px;*/
+	background-color: #ccc;
+}
+
+
 #index_main .item{
 	padding-top:10px;
 	border-top:1px solid #ccc;
 	margin-bottom: 10px;
-	height: 20px;
+	height: 60px;
+	width: 100%;
+	
 }
 
 #index_main>ul>li{

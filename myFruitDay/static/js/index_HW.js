@@ -108,10 +108,35 @@ function loadGoods(){
 	  
       // 加載商品類型
       show += "<div id='good_type_div"+ good_type_json.type_id +
-      "' class='item' style='height:30px;width:100%;overflow:hidden;'>"
+      "' class='item' style='overflow:hidden;'>"
         show += "<p>"
         show += good_type_json.title
         show += "</p>"
+        // show += "<p>"
+	        show += "<table>"
+			
+	          show += "<tr>"
+
+	          	show += "<th id='my-mouse-type_id"+ good_type_json.type_id + "_desc'" + 
+				  ' onmouseover=mymouse(' + good_type_json.type_id + ",'desc');" +
+				  " onclick=get_goods_order(" + good_type_json.type_id + ",'desc');" + ">"
+
+	          	  show += "價格由高至低"
+
+	          	show += "</th>"
+
+	          	show += "<th id='my-mouse-type_id"+ good_type_json.type_id + "_asc'" + 
+				  ' onmouseover=mymouse(' + good_type_json.type_id + ",'asc');" +
+				  " onclick=get_goods_order(" + good_type_json.type_id + ",'asc');" + ">"
+	          	  show += "價格由低至高"
+
+	          	show += "</th>"
+
+			  show += "</tr>"
+
+			show += "</table>"
+		// show += "</p>"
+       
         show += "<a href='javascript:add_other_goods(" + good_type_json.type_id + ")'>"
         show += '更多'
         show += "</a>"       
@@ -144,6 +169,10 @@ function loadGoods(){
       });
       show += "</ul>"
 
+      // 添加下半部商品欄位骨架
+      show += "<ul id='good_type_ul_bottom"+ good_type_json.type_id+ "'>"
+      show += "</ul>"
+
     });
     // 將文本轉換為標籤加入元素節點
     $('#index_main').html(show);
@@ -160,7 +189,7 @@ function add_other_goods(type_id){
   	function(goods_json){
   	  console.log(goods_json);
   	  
-  	  var show = '<ul id="good_type_ul_bottom' + type_id + '">';
+  	  var show = '';
 	  $.each(goods_json, function(i,obj){
 
 
@@ -185,17 +214,17 @@ function add_other_goods(type_id){
 	  	    show += "</div>"
 	  	  show += "</li>"
 
-	  	  // show += 'test~~~'
+
       });
-	  show += "</ul>"
+	  // show += "</ul>"
 
       // jQuery創建對象
 	  $show = $(show);
   	
-	// 將jQuery對象添加到元素節點後面
-  	$('#good_type_ul_top'+type_id).after($show);
+	// 將jQuery對象添加到元素節點裡面
+  	$('#good_type_ul_bottom'+type_id).html($show);
 
-  	// 獲取商品類型導航條元素節點內容
+
   	var more_nav = '';
   	more_nav += '<a href="javascript:add_other_goods(' + type_id + ')">'
     more_nav += '更多'
@@ -302,12 +331,118 @@ function cart_status(){
 	},'json');
 }
 
+// 滑鼠移入則執行變色
+
+function mymouse(type_id, desc_or_asc){
+	$("#my-mouse-type_id"+ type_id + '_' + desc_or_asc).css('cursor', 'pointer');
+}
+
+// # 加載此依照價格排序的所有商品
+function get_goods_order(type_id, desc_or_asc){
+
+	// 按下後轉換顏色
+  $("#my-mouse-type_id"+ type_id + '_' + desc_or_asc).css('backgroundColor', '#ccc');
+  if (desc_or_asc == 'desc'){
+  	exchange = 'asc';
+  } else{
+  	exchange = 'desc';
+  }
+  $("#my-mouse-type_id"+ type_id + '_' + exchange).css('backgroundColor', 'white');
+
+  // 將更多替換成隱藏
+  var more_nav = '';
+  more_nav += '<a href="javascript:add_other_goods(' + type_id + ')">'
+  more_nav += '更多'
+  more_nav += "</a>"
+
+  var less_nav = '';
+  less_nav += '<a href="javascript:hide_other_goods(' + type_id + ')">'
+  less_nav += '隱藏'
+  less_nav += "</a>"
+
+
+// 將更多替換為縮小 同時改變連結觸發的js函數
+  var before = $('#good_type_div'+type_id).html();
+  var after = before.replace(more_nav,less_nav);
+
+  $('#good_type_div'+type_id).html(after);
 
 
 
 
 
 
+
+
+  $.get('/goods_price_order/',
+  	{
+  		'type_id': type_id,
+  		'desc_or_asc': desc_or_asc,
+  	},
+  	function(goods_json){
+    // goods_json 為響應回來的json數據
+    var show_top = "";
+    var show_bottom = "";
+
+	  $.each(goods_json, function(i,obj){
+	  	if (i< 5){
+	  	// --------------------------------上半部份--------------------------------
+	  	  show_top += "<li "
+	  	  if ((i+1)%5==0){
+	  	  	show_top += "class='no-margin'";
+	  	  }
+	  	  show_top += ">"
+	  	    show_top += "<p>"
+	  	      show_top += "<img src='/"+obj.fields.picture+"'>"
+	  	    show_top += "</p>"
+
+	  	    show_top += "<div class='content'>"
+	  	    // 拼參數時要注意單雙引號
+	  	      show_top += "<a href='javascript:add_cart("+ obj.pk + ', "'+obj.fields.title+'");' +"'>"
+	  	        show_top += "<img src='/static/images/cart.png'>"
+	  	      show_top += "</a>"
+	  	      show_top += "<p>"+obj.fields.title
+	  	      show_top += "</p>"
+	  	      show_top += "<span>$"+obj.fields.price+'/'+obj.fields.spec
+	  	      show_top += "</span>"
+	  	    show_top += "</div>"
+	  	  show_top += "</li>"
+	  	}
+	  	// --------------------------------下半部份--------------------------------
+	  	else{
+      	  
+
+	  	  show_bottom += "<li "
+	  	  if ((i+1)%5==0){
+	  	  	show_bottom += "class='no-margin'";
+		  	  }
+		  	  show_bottom += ">"
+		  	    show_bottom += "<p>"
+		  	      show_bottom += "<img src='/"+obj.fields.picture+"'>"
+		  	    show_bottom += "</p>"
+
+		  	    show_bottom += "<div class='content'>"
+		  	    // 拼參數時要注意單雙引號
+		  	      show_bottom += "<a href='javascript:add_cart("+ obj.pk + ', "'+obj.fields.title+'");' +"'>"
+		  	        show_bottom += "<img src='/static/images/cart.png'>"
+		  	      show_bottom += "</a>"
+		  	      show_bottom += "<p>"+obj.fields.title
+		  	      show_bottom += "</p>"
+		  	      show_bottom += "<span>$"+obj.fields.price+'/'+obj.fields.spec
+		  	      show_bottom += "</span>"
+		  	    show_bottom += "</div>"
+		  	  show_bottom += "</li>"
+
+	  	}
+
+      });
+
+
+    // 將文本轉換為標籤加入元素節點
+    $('#good_type_ul_top'+type_id).html(show_top);
+    $('#good_type_ul_bottom'+type_id).html(show_bottom);
+  }, 'json');
+}
 
 
 

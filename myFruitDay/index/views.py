@@ -255,6 +255,35 @@ def load_other_goods_views(request):
 	return HttpResponse(goods_json)
 
 
+
+# 加載此依照價格排序的所有商品
+def goods_price_order_views(request):
+
+	# 獲取商品類型id
+	type_id = request.GET.get('type_id')
+
+	# 獲取此商品類型的數據物件
+	type = GoodsType.objects.get(id=type_id)
+
+	# 判斷依照價格高到低或是低到高
+	desc_or_asc = request.GET.get('desc_or_asc')
+	if desc_or_asc == 'desc':
+		# 獲取type類型下該商品類型下的商品中價格高到低的數據物件
+		goods_list = type.goods_set.order_by("-price")[:]
+	else:
+		# 獲取type類型下該商品類型下的商品中價格低到高的數據物件
+		goods_list = type.goods_set.order_by("price")[:]
+	# 將物件列表序列化為json格式
+	goods_json = serializers.serialize('json', goods_list)
+
+	# 將json數據交給前端
+	return HttpResponse(goods_json)
+
+
+
+
+
+
 # 添加商品數量
 def carts_index_views(request):
 	uid = request.session.get('uid')
