@@ -31,7 +31,7 @@
         <div id="banner" class="fader">
           {% for topic in params.topics[0:3] %}
             <li class="slide">
-              <a href="/info?topic_id={{topic.id}}" target="_blank">
+              <a href="/info?topic_id={{topic.id}}" target="">
                 <img src="/static/{{topic.images}}">
                 <span class="imginfo">{{topic.title|safe}}</span>
               </a>
@@ -50,7 +50,7 @@
 
         {% for topic in params.topics[3:5] %}
           <li>
-            <a href="/info?topic_id={{topic.id}}" target="_blank">
+            <a href="/info?topic_id={{topic.id}}" target="">
               <i><img src="/static/{{topic.images}}"></i>
               <h2>{{topic.title|safe}}</h2>
               <span>{{topic.category.cate_name}}</span>
@@ -64,7 +64,7 @@
     {% for topic in params.topics %}
 
     <div class="blogs" data-scroll-reveal="enter bottom over 1s">
-      <h3 class="blogtitle"><a href="info?topic_id={{topic.id}}" target="_blank">{{topic.title|safe}}</a></h3>
+      <h3 class="blogtitle"><a href="info?topic_id={{topic.id}}" target="">{{topic.title|safe}}</a></h3>
 
       {% if topic.images %}
 

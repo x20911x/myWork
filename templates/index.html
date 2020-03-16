@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>首頁_Samの部落格</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/static/images/bitbug_favicon.ico" type="image/x-icon" />
+  <link href="/static/css/base.css" rel="stylesheet">
+  <link href="/static/css/index.css" rel="stylesheet">
+  <link href="/static/css/m.css" rel="stylesheet">
+  <script src="/static/js/jquery.min.js" type="text/javascript"></script>
+  <script src="/static/js/jquery.easyfader.min.js"></script>
+  <script src="/static/js/scrollReveal.js"></script>
+  <script src="/static/js/common.js"></script>
+
+</head>
+
+<body>
+  {% import 'macro.html' as macros %}
+    {{macros.show(params)}}
+
+  {% block pagebg %}
+  {% endblock %}
+
+  {% block container %}
+  <article>
+    <!--banner begin-->
+    <div class="picsbox">
+      <div class="banner">
+        <div id="banner" class="fader">
+          {% for topic in params.topics[0:3] %}
+            <li class="slide">
+              <a href="/info?topic_id={{topic.id}}" target="">
+                <img src="/static/{{topic.images}}">
+                <span class="imginfo">{{topic.title|safe}}</span>
+              </a>
+            </li>
+          {% endfor %}
+          <div class="fader_controls">
+            <div class="page prev" data-target="prev">&lsaquo;</div>
+            <div class="page next" data-target="next">&rsaquo;</div>
+            <ul class="pager_list">
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!--banner end-->
+      <div class="toppic">
+
+        {% for topic in params.topics[3:5] %}
+          <li>
+            <a href="/info?topic_id={{topic.id}}" target="">
+              <i><img src="/static/{{topic.images}}"></i>
+              <h2>{{topic.title|safe}}</h2>
+              <span>{{topic.category.cate_name}}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="blank"></div>
+    <!--blogsbox begin-->
+    {% for topic in params.topics %}
+
+    <div class="blogs" data-scroll-reveal="enter bottom over 1s">
+      <h3 class="blogtitle"><a href="info?topic_id={{topic.id}}" target="">{{topic.title|safe}}</a></h3>
+
+      {% if topic.images %}
+
+        <span class='blogpic'>
+          <a href="info?topic_id={{topic.id}}" title="">
+            <img src="/static/{{topic.images}}" alt="">
+          </a>
+        </span>
+
+      {% endif %}
+      <p class="blogtext">{{topic.content|truncate(200)|safe}}</p>
+      <div class="bloginfo">
+        <ul>
+          <li class="author"><a href="info.html">{{topic.user.uname}}</a></li>
+          <li class="lmname"><a href="info.html">{{topic.category.cate_name}}</a></li>
+          <li class="timer">{{topic.pub_date.strftime("%Y--%m--%d")}}</li>
+          <li class="view"><span>瀏覽次數 {{topic.read_num}}</span></li>
+
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+
+<!-- 主程序渲染了此當前文檔, 則 被引用的文檔也可以使用當前所用有的全域變量 -->
+    {% include 'click_order.html' %}
+
+  </article>
+  {% endblock %}
+
+  {{macros.footer()}}
+
+</body>
+
+</html>

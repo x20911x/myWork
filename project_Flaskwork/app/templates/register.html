@@ -6,6 +6,7 @@
 		<link href="/static/css/login_reglogin.css" rel='stylesheet' type='text/css' />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="/static/js/jquery-1.11.3.js"></script>
+		<script src="/static/js/ajax_register.js"></script>
 </head>
 <body>
 		<div class="bg">
@@ -20,7 +21,7 @@
 				<ul class="left-form">
 					<h2>新帳號:</h2>
 					<li>
-			            <input id="login_id" type="text" name="loginname" placeholder="請輸入loginname" required/><br><br>
+			            <input id="login_id" type="text" name="loginname" placeholder="請輸入登入帳號" required/><br>
 			            <p id="prompt" style="color: red;float:left;padding: 0px"></p>
 						<div class="clear"> </div>
 					</li> 
@@ -33,7 +34,7 @@
 						<div class="clear"> </div>
 					</li> 
 					<li>
-            			<input type="url" name="url" placeholder="請輸入個人網站位址" required/>
+            			<input type="url" name="url" value="https://" required/>
 						<div class="clear"> </div>
 					</li> 
 					<li>
@@ -41,7 +42,7 @@
 						<div class="clear"> </div>
           			</li>
 	          		<li>
-	              		<input type="password" id="password2" name="password2" placeholder="請再次輸入密碼" required/><br><br>
+	              		<input type="password" id="password2" name="password2" placeholder="請再次輸入密碼" required/><br>
 	              		<p id="prompt2" style="color: red;float:left;padding: 0px"></p>
 	              		<div class="clear"> </div>
 	            	</li>
@@ -58,52 +59,9 @@
 				<div class="clear"> </div>
 			</form>
 	</div>
-	<script src="/static/js/jquery-1.11.3.js"></script>
-	<script>
-		$(function(){
-			$("#login_id").blur(function(){
-
-				var url ="http://3.114.174.92:5000/loginname-check?loginname=" + $("#login_id").val()
-				// console.log(url);
-				$.ajax({
-		          url : url,
-		          type : 'GET',
-		          dataType : 'jsonp',
-		          // jsonp : "callback",
-		          // jsonCallback : "successCallback",
-		          success:function(data){
-		          	$('#prompt').html(data.msg)
-	
-		          }
-		        });
-			});
-
-			$("#password2").blur(function(){
-				var url ="http://3.114.174.92:5000/password-check?password=" + $("#password").val()+'&password2='+ $("#password2").val()
-				console.log(url);
-				$.ajax({
-		          url : url,
-		          type : 'GET',
-		          dataType : 'jsonp',
-		          // jsonp : "callback",
-		          // jsonCallback : "successCallback",
-		          success:function(data){
-		          	$('#prompt2').html(data.msg)
-
-		          }
-		        });
-			});
-		});
 
 
-	</script>
 </body>
 </html>
 
 
-<!-- 		  		// var url = '/loginname-check?loginname='+$("#login_id").val()
-		  	
-		  		// $.get(url,function(resText){
-		  		// 		$('#prompt').html(resText.msg);
-		  		// 		console.log('adfsd');
-		    //     },'json'); -->
