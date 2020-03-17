@@ -1,0 +1,118 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	{% block title %}
+	<title>蔬果購物商城-登入</title>
+	{% endblock %}	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/Login.css' %}">
+
+
+	{% block script %}
+	{% endblock %}
+</head>
+<body>
+
+	<div id="container">
+		<!-- 上半部分 -->
+		{% block h2 %}
+		<h2 style="text-align: center">會員登錄</h2>
+		{% endblock %}
+		<!-- 左半部分 -->
+		<div class="left">
+			<img src="{% static 'images/huiyuan.jpg' %}" width="600px">
+			{% block anchor %}
+			<a href="{% url 'reg' %}">會員註冊></a>
+			{% endblock %}
+		</div>
+		
+		<!-- 右半部分 -->
+      	{% block form %}
+      	<div class="right">
+		<form action="/login/" method="post">
+			{% csrf_token%}
+	
+			{% for field in form %}
+
+			<div class="form-line">
+				<div class="l1">{{field.label}}</div>
+				<div class="r1">{{field}}</div>
+	<!-- 			<div class="r1"><input class="input1" type="text" name="uphone" maxlength="10" ></div> -->
+			</div>
+			{% endfor %}
+<!-- <div class="form-line">
+				<div class="l1">密碼</div>
+				<div class="r1"><input class="input1" type="password" name="upwd" maxlength="10"></div>
+			</div> -->
+
+
+			<div class="form-line">
+				<div class="l1"></div>
+				<div class="r1">
+					<div class="ll1">
+						<input type="checkbox" name="isSaved" >記住密碼
+					</div>
+					<!-- <div class="lr1">
+						<a href="">忘記密碼</a>
+						<a href="">快捷登入</a>
+					</div> -->
+				</div>
+			</div>
+			<div class="form-line">
+				<div class="l1"></div>
+				<div class="r1">
+					<div class="ll1">
+						<input class="loginBtn" type="submit" name="submit" value="登陸">
+					</div>
+					
+					<div class="lr1">					
+						<a class="registBtn" href="{% url 'reg' %}">註冊會員</a>
+					</div>
+				</div>
+			</div>
+		</form>
+		</div>
+		{% endblock %}
+
+
+	</div>
+</body>
+<!-- 給註冊頁面繼承後使用 -->
+<script src="/static/js/jquery-1.11.3.js"></script>
+<!-- <script src="/static/js/register.js"></script>
+<script>console.log('aaaa');</script> -->
+<!-- <script>
+	$(function(){
+		$("[name='uphone']").blur(function(){
+			console.log('success');
+			var url ="http://127.0.0.1:8000/loginname-check?loginname=" + $("[name='uphone']").val()
+			// console.log(url);
+			$.ajax({
+	          url : url,
+	          type : 'GET',
+	          dataType : 'jsonp',
+	          // jsonp : "callback",
+	          // jsonCallback : "successCallback",
+	          success:function(data){
+	          	$('#prompt').html(data.msg)
+
+	          }
+	        });
+		});
+	});
+</script> -->
+<!-- <script type="text/javascript">
+	$(function(){
+		$.get(
+		  '/loginname-check/',
+		  {'loginname': $(this).val()},
+		  function(data){
+		  	console.log('abc');
+		  	$('#prompt').html(data.msg);
+		  	// window.registerStatus = data.status;
+		  }, 'json'
+		);
+	});
+</script> -->
+</html>
