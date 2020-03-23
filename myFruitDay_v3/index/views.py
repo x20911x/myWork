@@ -420,6 +420,7 @@ def some_views(request):
 
 	# # 響應對象獲取了附加的Content-Disposition協議頭，它包含CSV文件的名稱。文件名可以是任意的；你想把它叫做什麼都可以。
 	filename = time.strftime("%Y-%m-%d %H-%M-%S",time.localtime())
+	# Content-Disposition響應頭指示回复的內容該以形式形式展示，以內聯的形式（即網頁或頁面的一部分），還是以附件的形式下載並保存到本地。
 	response['Content-Disposition'] = 'attachment; filename="{filename}.csv"'.format(filename=filename)
 	# response['Content-Disposition'] = 'attachment; filename="xxxx.csv"'
 
