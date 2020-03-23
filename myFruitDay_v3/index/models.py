@@ -11,7 +11,7 @@ class User(models.Model):
   isActive = models.BooleanField(default=False,verbose_name='是否激活')
 
   def __repr__(self):
-    return '<user:%r>' % (self.name,)
+    return '<user:%r>' % (self.uname,)
 
   class Meta:
     db_table = 'user'
