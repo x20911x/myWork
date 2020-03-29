@@ -111,7 +111,6 @@ def login_views(request):
 		if 'http://localhost:8000/account/password-reset/complete/' in url:
 			url = '/'
 
-
 		resp = redirect(url)
 		# 將前一個頁面或首頁url存入cookie
 		resp.set_cookie('url', url, 60*60*24*7)
