@@ -108,7 +108,7 @@ def login_views(request):
 		print('url in cookies at get request:',url)
 
 		# 若是從改密碼頁面登入則重定向到首頁
-		if 'http://localhost:8000/account/password-reset/complete/' in url:
+		if 'http://3.114.174.92:8000/account/password-reset/complete/' in url:
 			url = '/'
 
 		resp = redirect(url)
