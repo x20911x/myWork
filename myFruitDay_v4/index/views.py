@@ -18,7 +18,7 @@ def index_views(request):
 	# BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 	# print(BASE_DIR)
 	# print(os.path.join(BASE_DIR, 'templates'))
-	return render(request, 'index_HW.html', locals())
+	return render(request, 'index_bootstrap.html', locals())
 
 # Ajax from index_Hw.js check_login()檢查是否有登錄過 
 def check_login_views(request):

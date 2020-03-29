@@ -34,8 +34,15 @@ window.onload = function (){
 
 	// ---------------圖片輪播----------------
 	// 多設置一個div標籤 以設置獲取所有圖片子節點
-	var banner = document.getElementsByClassName('wrapper')[0];
-	var imgs = banner.children; //圖片array object
+	// var banner = document.getElementsByClassName('wrapper')[0];
+	// var imgs = banner.children; //圖片array object 
+
+	// --------------bootstrap version---------------
+	// var banner = document.getElementById('wrapper');
+	var banner = document.getElementsByClassName('col-lg')[1];
+	var imgs = banner.children; 
+	// --------------bootstrap version---------------
+
 	var imgNav = document.getElementById('circle');
 	var spanInfo = imgNav.children; // 索引數組
 	var timer = setInterval(autoPlay,1000); // 定時器
@@ -68,6 +75,7 @@ window.onload = function (){
 		// 因為imgIndex是全局變量 故當前索引不會重來
 		timer = setInterval(autoPlay, 1000);
 	}
+	
 };
 
 

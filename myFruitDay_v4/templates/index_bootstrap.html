@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  {% block title %}
+  <title>蔬果購物商城-首頁</title>
+  {% endblock %}
+  <link rel="stylesheet" href="{% static 'css/index_HW.css' %}">
+  <script src="/static/js/jquery-1.11.3.js"></script>
+  <script src="{% static 'js/index_HW.js' %}"></script>
+
+<!-- bootstrap link -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body style="text-align: center;">
+<div class="container" >
+
+  <div class="row">
+    <div id="nav" class="col-lg" style = "border: 1px dotted #f60;">
+      One of three columns
+      <!-- 1.1 右側導航-->
+      <ul class="rightNav">
+
+        <li id="login">
+          ajax動態加載
+        </li>
+        <li>
+          <b></b> <!--使用空的文本標籤直接設定邊框 -->
+          <a href="{% url 'index' %}">果園首頁</a>
+        </li>
+        <li id="cart">
+          ajax動態加載
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="banner" class="row">
+
+    <div class = "wrapper" id="wrapper">
+      <div class="col-lg" style = "border: 1px dotted #f60;">
+        <img id="ba" src="{% static 'images/banner1.jpg' %}">
+        <img id="ba" src="{% static 'images/banner2.jpg' %}">
+        <img id="ba" src="{% static 'images/banner3.jpg' %}">
+
+        <div id = "circle">
+          <span><a href="#">1</a></span>
+          <span><a href="#">2</a></span>
+          <span><a href="#">3</a></span>
+        </div>    
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

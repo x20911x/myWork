@@ -98,7 +98,11 @@ img{
 	margin: 15px 0;
 }
 #banner img{
-	width: 100%;
+	/*width: 100%;*/
+	/*-------------bootstrap version---------------*/
+	width: 900px;
+	/*--------------bootstrap version---------------*/
+
 	height:207px;
 }
 
@@ -112,7 +116,7 @@ img{
 }
 
 /*圖片索引*/
-#banner>div.wrapper>#circle{
+#banner>div.wrapper #circle{
 	width: 100%;
 	height: 25px;
 	position: absolute;
