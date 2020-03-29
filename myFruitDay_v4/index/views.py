@@ -106,6 +106,12 @@ def login_views(request):
 		# 獲取重定向的url, (前面一頁面或首頁)
 		url = request.META.get('HTTP_REFERER','/')
 		print('url in cookies at get request:',url)
+
+		# 若是從改密碼頁面登入則重定向到首頁
+		if 'http://localhost:8000/account/password-reset/complete/' in url:
+			url = '/'
+
+
 		resp = redirect(url)
 		# 將前一個頁面或首頁url存入cookie
 		resp.set_cookie('url', url, 60*60*24*7)
@@ -141,6 +147,7 @@ def login_views(request):
 			url = request.COOKIES.get('url','/')
 
 			# 如果從"註冊頁"過來"登錄頁"則登錄後返回首頁
+			print('url for login REFFER>>>:', url)
 			if url == ('http://%s/register/'% request.get_host()):
 				url = '/'
 
