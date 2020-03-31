@@ -13,7 +13,7 @@
 
 ### IT知識筆記部落格 - Flask框架
 使用 Python的Flask框架開發網路應用程式"知識部落格網站"，使用SQLAlchemy 與ORM 存取關聯式 MySQL實現對文章的增、刪、改、查(CRUD)操作；推薦文章、文章瀏覽次數排行設置；登陸、註冊功能；Ajax動態部分刷新技術實現1. 分類文章列表 2.提示註冊頁註冊用戶名是否使用過 3. 兩次密碼是否一致。
-作品連結：http://3.114.174.92:5000/
+作品連結：http://ec2-3-114-174-92.ap-northeast-1.compute.amazonaws.com:5000/
 程式碼：https://github.com/x20911x/myWork/tree/master/project_Flaskwork
 
 ### 蔬果購物商城 -Django框架
@@ -31,6 +31,6 @@
 
 6. 忘記密碼時寄信點擊超連接改密碼功能；
 
-7. 串接社群軟體Google、Facebook API的第三方登入功能。
+7. 串接社群軟體Google API的第三方登入功能。
 作品連結：http://3.114.174.92:8000/
-程式碼：https://github.com/x20911x/myWork/tree/master/myFruitDay_v4
+程式碼：http://ec2-3-114-174-92.ap-northeast-1.compute.amazonaws.com:8000/
