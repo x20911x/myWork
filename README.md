@@ -32,5 +32,5 @@
 6. 忘記密碼時寄信點擊超連接改密碼功能；
 
 7. 串接社群軟體Google API的第三方登入功能。
-作品連結：http://3.114.174.92:8000/
-程式碼：http://ec2-3-114-174-92.ap-northeast-1.compute.amazonaws.com:8000/
+作品連結：http://ec2-3-114-174-92.ap-northeast-1.compute.amazonaws.com:8000/
+程式碼：https://github.com/x20911x/myWork/tree/master/myFruitDay_v4
