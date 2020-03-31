@@ -96,8 +96,7 @@
 				</div>
 			</div>			
 
-	        {% if request.user.is_authenticated %}
-	        
+	        {% if request.user.is_authenticated %}       
 	        <input type="hidden" name="google" value="{{ request.user.username }}">
 	        {% endif %}
 		</form>

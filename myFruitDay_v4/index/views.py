@@ -475,7 +475,8 @@ def some_views(request):
 	filename = time.strftime("%Y-%m-%d %H-%M-%S",time.localtime())
 	response['Content-Disposition'] = 'attachment; filename="{filename}.csv"'.format(filename=filename)
 	# response['Content-Disposition'] = 'attachment; filename="xxxx.csv"'
-
+	# 設置編碼格式
+	response.write(u'\ufeff'.encode('utf8'))
 	# 使用CSV模塊，把響應體內容封裝到CSV文件物件內，這樣寫入的內容都會被寫入到response.content之中
 	writer = csv.writer(response)
 	writer.writerow(['商品', '單價', '數量', '小計'])
