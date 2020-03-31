@@ -388,13 +388,13 @@ def info_views():
 # 刪除文章視圖函數
 @main.route('/delete_topic')
 def delete_user():
+	# 獲取該文章的id
+	topic_id = request.args['topic_id']
+
 	# 判斷若沒有站長權限 則重定向到本篇文章
 	user = User.query.filter_by(id=session.get('uid')).first()	
 	if user.is_author != 1:
 		return redirect('/info?topic_id='+str(topic_id))
-	
-	# 獲取該文章的id
-	topic_id = request.args['topic_id']
 
 	# 查詢該文章的數據
 	topic = Topic.query.filter_by(id=topic_id).first()
