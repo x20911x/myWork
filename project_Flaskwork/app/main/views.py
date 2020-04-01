@@ -1,8 +1,10 @@
 from flask import render_template, request, session, redirect, jsonify
 import json, time, datetime, os, pdb
-# import the Blueprint to form url
+# import the Blueprint to form url 
+# 導入藍圖程序用於創建路由
 from . import main
 from . import views_tool
+# ORM數據庫接口
 from .. import db
 # import attribute class to use database
 from ..models import *
@@ -388,13 +390,14 @@ def info_views():
 # 刪除文章視圖函數
 @main.route('/delete_topic')
 def delete_user():
+	# 獲取該文章的id
+	topic_id = request.args['topic_id']
+
 	# 判斷若沒有站長權限 則重定向到本篇文章
 	user = User.query.filter_by(id=session.get('uid')).first()	
 	if user.is_author != 1:
 		return redirect('/info?topic_id='+str(topic_id))
 	
-	# 獲取該文章的id
-	topic_id = request.args['topic_id']
 
 	# 查詢該文章的數據
 	topic = Topic.query.filter_by(id=topic_id).first()
