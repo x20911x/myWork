@@ -14,6 +14,9 @@ def main():
 	HOST = sys.argv[1]
 	POST = int(sys.argv[2])
 	ADDR = (HOST,POST)
+# setsockopt(level,optname,value)
+
+# level定義了哪個選項將被使用。通常情況下是SOL_SOCKET，意思是正在使用的socket選項。它還可以通過設定一個特殊協議號碼來設定協議選項，
 
 	# 創建立socket使用網路套接字類型AF_INET, 流式套接字SOCK_STREAM(Tcp協議)
 	s = socket()

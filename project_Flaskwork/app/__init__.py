@@ -16,7 +16,7 @@ def create_app():
 	app.config['DEBUG'] = True
 	#配置數據庫的連庫字符串
 	app.config['SQLALCHEMY_DATABASE_URI']\
-	="mysql://root:x20911x@localhost:3306/blog"
+	="mysql://root:a123456@localhost:3306/blog"
 	#配置數據庫內容在更新時自動提交
 	app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 	#配置session所需要的秘鑰
