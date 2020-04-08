@@ -1,8 +1,10 @@
 from flask import render_template, request, session, redirect, jsonify
 import json, time, datetime, os, pdb
-# import the Blueprint to form url
+# import the Blueprint to form url 
+# 導入藍圖程序用於創建路由
 from . import main
 from . import views_tool
+# ORM數據庫接口
 from .. import db
 # import attribute class to use database
 from ..models import *
@@ -395,7 +397,7 @@ def delete_user():
 	user = User.query.filter_by(id=session.get('uid')).first()	
 	if user.is_author != 1:
 		return redirect('/info?topic_id='+str(topic_id))
-
+	
 	# 查詢該文章的數據
 	topic = Topic.query.filter_by(id=topic_id).first()
 

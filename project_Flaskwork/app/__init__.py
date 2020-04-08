@@ -35,6 +35,7 @@ def create_app():
 	db.create_all(app=app)
 
 	# Blueprint of main ralationship with app
+	# 藍圖程序main與app關聯
 	from .main import main as main_blueprint
 	app.register_blueprint(main_blueprint)
 
