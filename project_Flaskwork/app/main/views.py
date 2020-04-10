@@ -15,6 +15,10 @@ from ..models import *
 def main_index():
 	# 調用每個頁面都須處理的事情函數every_views
 	uname,topics,topics_desc = views_tool.every_views()
+	print('topics',topics)
+	topics = topics[::-1]
+	print('---------')
+	print('topics',topics)
 	return render_template('index.html',params=locals())
 
 # 登入功能

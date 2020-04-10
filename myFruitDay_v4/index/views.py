@@ -108,12 +108,10 @@ def login_views(request):
 		print('url in cookies at get request:',url)
 
 		# 若是從改密碼頁面登入則重定向到首頁
-<<<<<<< HEAD
-		if 'http://3.114.174.92:8000/account/password-reset/complete/' in url:
-=======
+
 		# http://3.114.174.92:5000/
 		if 'http://localhost:8000/account/password-reset/complete/' in url:
->>>>>>> b3b5c2a57f133598cedabe0826c6e1427d62fedd
+
 			url = '/'
 
 		resp = redirect(url)
@@ -294,6 +292,7 @@ def type_goods_views(request):
 		}
 		all_list.append(dic)
 	# 將json數據交給前端
+
 	return HttpResponse(json.dumps(all_list))
 
 
