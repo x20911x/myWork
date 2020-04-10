@@ -432,13 +432,15 @@ def update_user():
 # Ajax局部刷新文章主題列表所需的json數據
 @main.route('/list_data')
 def list_date_views():
+	print('dddddddddddddddd')
 	# 獲取回調函數名
 	cb = request.args.get('callback')
 
 	# 獲取文章的分類id
 	pid = request.args.get('pid')
 	topics = Topic.query.filter_by(category_id=pid).all()
-	
+	print(topics)
+	print('---------------------------')
 	# 生成該文章的所有相關數據並轉換為Json格式
 	topics_list = []
 	for topic in topics:
@@ -451,7 +453,7 @@ def list_date_views():
 		topics_list.append(topic_dic)
 
 	# 組合成js函數名及傳入的參數的字符串
-	return cb+"("+json.dumps(topics_list)+")"
+	return cb+"("+json.dumps(topics_list[::-1])+")"
 
 
 # 時間軸處理函數

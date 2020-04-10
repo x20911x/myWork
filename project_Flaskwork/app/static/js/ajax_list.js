@@ -1,6 +1,6 @@
 function loadTopic(pid){
   $.ajax({
-    url:'http://3.114.174.92:5000/list_data?pid='+pid,
+    url:'http://127.0.0.1:5000/list_data?pid='+pid,
     type:'get',
     dataType:'jsonp',
     // 這個地方使用同步 確保獲取json數據後再往下執行,
@@ -11,10 +11,9 @@ function loadTopic(pid){
       console.log('loadfuncing');
       $.each(data,function(i,obj){
         var html_list1 = ('<div class="blogs" data-scroll-reveal="enter bottom over 1s">'+
-        '<div class="blogs" data-scroll-reveal="enter bottom over 1s">'+
+      
         '<h3 class="blogtitle"><a href="info?topic_id='+
         obj.id+'" target="_blank">'+ obj.title + '</a></h3>');
-
 
         var html_list2 = ('<span class="blogpic">'+
         '<a href="info?topic_id='+
@@ -31,7 +30,7 @@ function loadTopic(pid){
           obj.category_cate_name +
           '</a></li>' +
           '<li class="timer">' +
-          obj.pub_date+
+          obj.pub_date.slice(0,11)+
           '</li><li class="view"><span>'+
           obj.read_num+
           '</span>人氣</li>'+
