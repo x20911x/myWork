@@ -153,61 +153,7 @@ def password_check_views():
 	return cb+"("+data+")"
 
 
-# 發表文章
-class Release():
-	def __init__(self):
-		self.user = User.query.filter_by(id=(session.get('uid'))).first()
 
-	def login_status(self):
-		# 獲取server登錄訊息, 驗證是否為用戶
-		if 'uid' in session and 'uname' in session:
-			uname = session['uname']
-		elif 'uid' in request.cookies and 'uname' in request.cookies:
-			session['uid'] = request.cookies['uid']
-			session['uname'] = request.cookies['uname']	
-				
-			uname = request.cookies.get('uname')
-		# 若非用戶則重定向到登錄頁面
-		else:
-			redirect('/login')
-
-	def top3_topic(self):
-		# 調用每個頁面都須處理的事情函數every_views
-		return views_tool.every_views()
-
-	def author_right(self):
-		if self.user.is_author != 1:
-			# 若非板主則重定向到首頁
-			print('i am not author~~~~~~')
-			return True
-		else:
-			return False
-
-	def post_release_topic(self):
-		# 創建topic表數據
-		topic = Topic()
-
-		# 文字存入資料庫的轉換處理 以正常渲染到模板上
-		# 把修改後的title存入topic表中
-		topic.title = views_tool.text_to_database(request.form.get('author'))
-
-		# 獲取發表文章資訊相關的內容
-		topic.blogtype_id = request.form.get('list')
-		topic.category_id = request.form.get('category')
-		topic.user_id = session.get('uid')
-		topic.pub_date = datetime.datetime.now().strftime("%Y-%m-%d")
-
-		# 文字存入資料庫的轉換處理 以正常渲染到模板上
-		# 把修改後的content存入topic表中
-		topic.content = views_tool.text_to_database(request.form.get('content'))
-		self.upload_file(topic)
-
-		db.session.add(topic)
-
-
-	def upload_file(self,topic):
-		Update.upload_file(self,topic)
-		# topic.save()
 
 # 修改文章
 class Update():
@@ -279,6 +225,65 @@ class Update():
 			
 			# 將文件保存至服務器upload_path的路徑
 			f.save(upload_path)
+
+# 發表文章
+class Release(Update):
+	def __init__(self):
+		self.user = User.query.filter_by(id=(session.get('uid'))).first()
+
+	def login_status(self):
+		# 獲取server登錄訊息, 驗證是否為用戶
+		if 'uid' in session and 'uname' in session:
+			uname = session['uname']
+		elif 'uid' in request.cookies and 'uname' in request.cookies:
+			session['uid'] = request.cookies['uid']
+			session['uname'] = request.cookies['uname']	
+				
+			uname = request.cookies.get('uname')
+		# 若非用戶則重定向到登錄頁面
+		else:
+			redirect('/login')
+
+	def top3_topic(self):
+		# 調用每個頁面都須處理的事情函數every_views
+		return views_tool.every_views()
+
+	def author_right(self):
+		if self.user.is_author != 1:
+			# 若非板主則重定向到首頁
+			print('i am not author~~~~~~')
+			return True
+		else:
+			return False
+
+	def post_release_topic(self):
+		# 創建topic表數據
+		topic = Topic()
+
+		# 文字存入資料庫的轉換處理 以正常渲染到模板上
+		# 把修改後的title存入topic表中
+		topic.title = views_tool.text_to_database(request.form.get('author'))
+
+		# 獲取發表文章資訊相關的內容
+		topic.blogtype_id = request.form.get('list')
+		topic.category_id = request.form.get('category')
+		topic.user_id = session.get('uid')
+		topic.pub_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+		# 文字存入資料庫的轉換處理 以正常渲染到模板上
+		# 把修改後的content存入topic表中
+		topic.content = views_tool.text_to_database(request.form.get('content'))
+		self.upload_file(topic)
+
+		db.session.add(topic)
+
+
+	# def upload_file(self,topic):
+	# 	Update.upload_file(self,topic)
+		# topic.save()
+
+
+
 
 
 # 發表文章或修改文章
