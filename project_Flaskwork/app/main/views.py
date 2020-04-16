@@ -153,10 +153,12 @@ def password_check_views():
 	return cb+"("+data+")"
 
 
-# 發表文章或修改文章
-@main.route('/release',methods=['POST','GET'])
-def release_views():
-	if request.method == 'GET':
+# 發表文章
+class Release():
+	def __init__(self):
+		self.user = User.query.filter_by(id=(session.get('uid'))).first()
+
+	def login_status(self):
 		# 獲取server登錄訊息, 驗證是否為用戶
 		if 'uid' in session and 'uname' in session:
 			uname = session['uname']
@@ -167,61 +169,160 @@ def release_views():
 			uname = request.cookies.get('uname')
 		# 若非用戶則重定向到登錄頁面
 		else:
-			return redirect('/login')
+			redirect('/login')
 
+	def top3_topic(self):
 		# 調用每個頁面都須處理的事情函數every_views
-		uname,topics,topics_desc = views_tool.every_views()
+		return views_tool.every_views()
+
+	def author_right(self):
+		if self.user.is_author != 1:
+			# 若非板主則重定向到首頁
+			print('i am not author~~~~~~')
+			return True
+		else:
+			return False
+
+	def post_release_topic(self):
+		# 創建topic表數據
+		topic = Topic()
+
+		# 文字存入資料庫的轉換處理 以正常渲染到模板上
+		# 把修改後的title存入topic表中
+		topic.title = views_tool.text_to_database(request.form.get('author'))
+
+		# 獲取發表文章資訊相關的內容
+		topic.blogtype_id = request.form.get('list')
+		topic.category_id = request.form.get('category')
+		topic.user_id = session.get('uid')
+		topic.pub_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+		# 文字存入資料庫的轉換處理 以正常渲染到模板上
+		# 把修改後的content存入topic表中
+		topic.content = views_tool.text_to_database(request.form.get('content'))
+		self.upload_file(topic)
+
+		db.session.add(topic)
+
+
+	def upload_file(self,topic):
+		Update.upload_file(self,topic)
+		# topic.save()
+
+# 修改文章
+class Update():
+	def __init__(self,update):
+		self.update = update
+		self.user = User.query.filter_by(id=(session.get('uid'))).first()
+
+	def whether_update_or_not(self):
+		if self.update:
+			return True
+		else:
+			return False
+
+	def author_right(self):
+		# 驗證是否有權限修改文章
+		if self.user.is_author != 1 and self.whether_update_or_not():
+			# 若非板主點擊修改文章時重定向到該文章頁面
+			return True
+		else:
+			return False
+
+	def get_update_topic(self,topic):
+		# -------------------獲取到原本文章的title-------------
+		title = views_tool.database_to_text(topic.title)
+
+		# -------------------獲取到原本文章的內文-------------
+		content = views_tool.database_to_text(topic.content)
+
+		# -------------------獲取到原本文章的category_id-------------
+		category_id = topic.category_id
+
+		# -------------------獲取到原本文章的blogtype_id-------------
+		blogtype_id = topic.blogtype_id	
+
+		return title,content,category_id,blogtype_id
+
+
+	def post_update_topic(self,topic):
+		# 文字存入資料庫的轉換處理 以正常渲染到模板上
+		# 把修改後的title存入topic表中
+		topic.title = views_tool.text_to_database(request.form.get('author'))
+
+		# 獲取修改後的內容存入topic表中 
+		topic.blogtype_id = request.form.get('list')
+		topic.category_id = request.form.get('category')
+		# topic.user_id = request.cookies.get('uid')
+
+		# 文字存入資料庫的轉換處理 以正常渲染到模板上
+		# 把修改後的content存入topic表中
+		topic.content = views_tool.text_to_database(request.form.get('content'))
+		self.upload_file(topic)
+
+
+	def upload_file(self,topic):
+		# 若有夾帶檔案則執行以下代碼
+		rf = request.files.get('picture')
+		if rf:
+			print('uploaded file')
+			# 取出文件
+			filename, f = views_tool.file_views(rf)
+
+			# 處理文件名稱 將新的文件名賦值給topic.images
+			topic.images = 'upload/'+filename
+			
+			# 獲取當前文件或文件夾的存儲路徑
+			basedir = os.path.dirname(os.path.dirname(__file__))
+
+			upload_path = os.path.join(basedir,'static/upload',filename)
+			
+			# 將文件保存至服務器upload_path的路徑
+			f.save(upload_path)
+
+
+# 發表文章或修改文章
+@main.route('/release',methods=['POST','GET'])
+def release_views():
+	if request.method == 'GET':
+		R = Release()
+		R.login_status()
+		
+		# 調用每個頁面都須處理的事情函數every_views
+		uname,topics,topics_desc = R.top3_topic()
 
 		# 驗證是否有權限修改文章
 		update_get = request.args.get('update_get')	
 
+		U = Update(update_get)
+		R.author_right()
 
-		user = User.query.filter_by(id=(session.get('uid'))).first()
-
-		if user.is_author != 1 and update_get:
-			# 若非板主點擊修改文章時重定向到該文章頁面
+		if U.author_right():
+		# 	# 若非板主點擊修改文章時重定向到該文章頁面
 			return redirect('/info?topic_id='+str(request.args.get('topic_id')))
 
 		# 驗證是否有權限發表文章
-		# user = User.query.filter_by(id=session.get('uid')).first()
-		if user.is_author != 1:
+		if R.author_right():
 			# 若非板主則重定向到首頁
 			return redirect('/')
 
-		#！！！！！！！分叉點！！！！！！！ 
-		# 用來判斷採取"更新"(有值) 或是 "發布文章 >>> 
-		# (有值)採取 >>> "更新" 
-		# (空數值)採取 >>> "發布文章"
-		update_get = request.args.get('update_get')
-		
 		# query category and blogtype
 		categories = Category.query.all()
 		blogTypes = BlogType.query.all()
 
 		########### handle the get for update #############
 		# 進入 "發表" or "修改" 文章的處理
-		if update_get:
+		if U.whether_update_or_not():
 			# 1. 首先是查詢資料庫該文章的數據, 
 			# 2. 渲染到原本的模板後, 在網頁上修改 
 			# 3. 按下修改按鈕後, 發起post請求在後端處理新的數據更新到資料庫去, 
 			# 最後重定向到觀看頁面info.html
-
 			# 獲取文章的topic_id, 並查詢該文章物件
 			topic_id = request.args.get('topic_id')
+			
 			topic = Topic.query.filter_by(id=topic_id).first()
-			# print(topic.content)
 
-			# -------------------獲取到原本文章的title-------------
-			title = views_tool.database_to_text(topic.title)
-
-			# -------------------獲取到原本文章的內文-------------
-			content = views_tool.database_to_text(topic.content)
-
-			# -------------------獲取到原本文章的category_id-------------
-			category_id = topic.category_id
-
-			# -------------------獲取到原本文章的blogtype_id-------------
-			blogtype_id = topic.blogtype_id
+			title,content,category_id,blogtype_id = U.get_update_topic(topic)
 
 			#！！！！！！！post端分叉點！！！！！！！ 
 			# 用來判斷採取"更新"(有值) 或是 "發布文章 >>> 
@@ -242,97 +343,23 @@ def release_views():
 		# (有值)採取 >>> "更新" 
 		# (空數值)採取 >>> "發布文章"
 		update_post = request.form.get('update_post')
+		U = Update(update_post)
+
 		########### handle the post for update topic #############
-		if update_post:
+		if U.whether_update_or_not():
 
 			# 獲取要修改的文章id
 			topic_id = request.form.get('topic_id')
 			topic = Topic.query.filter_by(id=int(topic_id)).first()
 
-			# 文字存入資料庫的轉換處理 以正常渲染到模板上
-			# 把修改後的title存入topic表中
-			topic.title = views_tool.text_to_database(request.form.get('author'))
+			U.post_update_topic(topic)
 
-			# 獲取修改後的內容存入topic表中 
-			topic.blogtype_id = request.form.get('list')
-			topic.category_id = request.form.get('category')
-			# topic.user_id = request.cookies.get('uid')
-
-			# 文字存入資料庫的轉換處理 以正常渲染到模板上
-			# 把修改後的content存入topic表中
-			topic.content = views_tool.text_to_database(request.form.get('content'))
-
-
-			# 若有夾帶檔案則執行以下代碼
-			rf = request.files.get('picture')
-			print('request.files',request.files,"request.files.get('picture'):",rf,'type(rf):',type(rf))
-			if rf:
-				print('uploaded file')
-				# 取出文件
-				filename, f = views_tool.file_views(rf)
-
-				# 處理文件名稱 將新的文件名賦值給topic.images
-				topic.images = 'upload/'+filename
-				
-				# 獲取當前文件或文件夾的存儲路徑
-				print('__file__:',__file__)
-				print('os.path.dirname(__file__)',os.path.dirname(__file__))
-				print('basedir',os.path.dirname(os.path.dirname(__file__)))
-
-				basedir = os.path.dirname(os.path.dirname(__file__))
-
-				upload_path = os.path.join(basedir,'static/upload',filename)
-				
-				# 將文件保存至服務器upload_path的路徑
-				f.save(upload_path)
-
-			# 提交topic表數據到數據庫	
-			db.session.add(topic)
 			return redirect('/info?topic_id='+str(topic_id))
 		########### handle the post for release topic #############
 		else:
-			# 創建topic表數據
-			topic = Topic()
+			R = Release()
+			R.post_release_topic()
 
-			# 文字存入資料庫的轉換處理 以正常渲染到模板上
-			# 把修改後的title存入topic表中
-			topic.title = views_tool.text_to_database(request.form.get('author'))
-
-			# 獲取發表文章資訊相關的內容
-			topic.blogtype_id = request.form.get('list')
-			topic.category_id = request.form.get('category')
-			topic.user_id = session.get('uid')
-			topic.pub_date = datetime.datetime.now().strftime("%Y-%m-%d")
-
-			# 文字存入資料庫的轉換處理 以正常渲染到模板上
-			# 把修改後的content存入topic表中
-			topic.content = views_tool.text_to_database(request.form.get('content'))
-
-			# 若有夾帶檔案則執行以下代碼
-			rf = request.files.get('picture')
-			print('request.files',request.files,"request.files.get('picture'):",rf,'type(rf):',type(rf))
-			if rf:
-				print('uploaded file')
-				# 取出文件
-				filename, f = views_tool.file_views(rf)
-
-				# 處理文件名稱 將文件明賦值給topic.images
-				topic.images = 'upload/'+filename
-				
-				# 獲取當前文件或文件夾的存儲路徑
-				print('__file__:',__file__)
-				print('os.path.dirname(__file__)',os.path.dirname(__file__))
-				print('basedir',os.path.dirname(os.path.dirname(__file__)))
-
-				basedir = os.path.dirname(os.path.dirname(__file__))
-
-				upload_path = os.path.join(basedir,'static/upload',filename)
-				
-				# 將文件保存至服務器upload_path的路徑
-				f.save(upload_path)
-
-			# 提交topic表數據到數據庫	
-			db.session.add(topic)
 			return redirect('/')
 
 
