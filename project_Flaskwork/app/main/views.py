@@ -175,7 +175,8 @@ class Update():
 		else:
 			return False
 
-	def get_update_topic(self,topic):
+	@staticmethod
+	def get_update_topic(topic):
 		# -------------------獲取到原本文章的title-------------
 		title = views_tool.database_to_text(topic.title)
 
@@ -231,7 +232,8 @@ class Release(Update):
 	def __init__(self):
 		self.user = User.query.filter_by(id=(session.get('uid'))).first()
 
-	def login_status(self):
+	@staticmethod
+	def login_status():
 		# 獲取server登錄訊息, 驗證是否為用戶
 		if 'uid' in session and 'uname' in session:
 			uname = session['uname']
@@ -244,7 +246,8 @@ class Release(Update):
 		else:
 			redirect('/login')
 
-	def top3_topic(self):
+	@staticmethod
+	def top3_topic():
 		# 調用每個頁面都須處理的事情函數every_views
 		return views_tool.every_views()
 
@@ -291,10 +294,10 @@ class Release(Update):
 def release_views():
 	if request.method == 'GET':
 		R = Release()
-		R.login_status()
+		Release.login_status()
 		
 		# 調用每個頁面都須處理的事情函數every_views
-		uname,topics,topics_desc = R.top3_topic()
+		uname,topics,topics_desc = Release.top3_topic()
 
 		# 驗證是否有權限修改文章
 		update_get = request.args.get('update_get')	
@@ -327,7 +330,7 @@ def release_views():
 			
 			topic = Topic.query.filter_by(id=topic_id).first()
 
-			title,content,category_id,blogtype_id = U.get_update_topic(topic)
+			title,content,category_id,blogtype_id = Update.get_update_topic(topic)
 
 			#！！！！！！！post端分叉點！！！！！！！ 
 			# 用來判斷採取"更新"(有值) 或是 "發布文章 >>> 
