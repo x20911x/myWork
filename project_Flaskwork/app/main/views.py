@@ -167,9 +167,9 @@ class Update():
 		else:
 			return False
 
-	def author_right(self):
+	def author_right(self,topic):
 		# 驗證是否有權限修改文章
-		if self.user.is_author != 1 and self.whether_update_or_not():
+		if self.user == topic.user and self.whether_update_or_not():
 			# 若非板主點擊修改文章時重定向到該文章頁面
 			return True
 		else:
@@ -305,9 +305,11 @@ def release_views():
 		U = Update(update_get)
 		R.author_right()
 
-		if U.author_right():
+		topic_id = str(request.args.get('topic_id'))
+		topic = Topic.query.filter(id=topic_id).first()
+		if U.author_right(topic):
 		# 	# 若非板主點擊修改文章時重定向到該文章頁面
-			return redirect('/info?topic_id='+str(request.args.get('topic_id')))
+			return redirect('/info?topic_id='+topic_id)
 
 		# 驗證是否有權限發表文章
 		if R.author_right():
